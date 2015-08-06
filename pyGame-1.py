@@ -17,6 +17,13 @@ def makeGrid():
         pygame.draw.line(screen,(255,0,0),(0,y), (xres,y),1)
         pygame.display.flip()
         done = 0
+        
+def fillSquare(event,amount=1):
+    xp = (event.pos[0]/10)*10+1  #0 is the x position
+    yp = (event.pos[1]/10)*10+1  #1 is the y position
+    rectange = (xp,yp,10,10)
+    pygame.draw.rect(screen, (0, 255, 0), (xp, yp, 9, 9))
+    pygame.display.flip()
 	
 #The main loop
 def main():
@@ -43,11 +50,7 @@ def main():
                  
                  if e.button == 1:
                      print "left button clicked"
-                     xp = (e.pos[0]/10)*10+1  #0 is the x position
-                     yp = (e.pos[1]/10)*10+1  #1 is the y position
-                     rectange = (xp,yp,10,10)
-                     pygame.draw.rect(screen, (0, 255, 0), (xp, yp, 9, 9))
-                     pygame.display.flip()
+                     fillSquare(e)
                  elif e.button == 2:
                      print "middle button clicked"
                  elif e.button == 3:
