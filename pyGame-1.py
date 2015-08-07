@@ -1,6 +1,8 @@
 #!/usr/bin/python
 import pygame,os,sys
 from pygame.locals import *
+from clAttraction import Attraction
+
 xres = 640
 yres = 480
 screen = pygame.display.set_mode((xres, yres))
@@ -27,8 +29,9 @@ def fillSquare(event):
     
     i=0
     while i <= attr1.getWidth():
-        xp += 10
+        
         pygame.draw.rect(screen, (0, 255, 0), (xp, yp, 9, 9))
+        xp += 10
         i+=1
     
     pygame.display.flip()
@@ -73,21 +76,7 @@ def main():
         if done:
             break
             
-#Attraction class
-class Attraction:
-	squaresWidth = 4
-	squaresHeight = 4
-	cost = 50
-	
-	def __init__(self,width,height):
-		self.squaresHeight = height
-		self.squaresWidth = width
-		
-	def getHeight(self):
-		return self.squaresHeight
-		
-	def getWidth(self):
-		return self.squaresWidth
+
 
 if __name__ == "__main__":
    main()
