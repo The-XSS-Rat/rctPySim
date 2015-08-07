@@ -18,11 +18,19 @@ def makeGrid():
         pygame.display.flip()
         done = 0
         
-def fillSquare(event,amount=1):
-    xp = (event.pos[0]/10)*10+1  #0 is the x position
-    yp = (event.pos[1]/10)*10+1  #1 is the y position
+def fillSquare(event):
+    attr1 = Attraction(5,5)
+
+    xp = (event.pos[0]/10)*10+1 #0 is the x position
+    yp = (event.pos[1]/10)*10+1 #1 is the y position
     rectange = (xp,yp,10,10)
-    pygame.draw.rect(screen, (0, 255, 0), (xp, yp, 9, 9))
+    
+    i=0
+    while i <= attr1.getWidth():
+        xp += 10
+        pygame.draw.rect(screen, (0, 255, 0), (xp, yp, 9, 9))
+        i+=1
+    
     pygame.display.flip()
 	
 #The main loop
@@ -64,5 +72,22 @@ def main():
                  print e.pos
         if done:
             break
+            
+#Attraction class
+class Attraction:
+	squaresWidth = 4
+	squaresHeight = 4
+	cost = 50
+	
+	def __init__(self,width,height):
+		self.squaresHeight = height
+		self.squaresWidth = width
+		
+	def getHeight(self):
+		return self.squaresHeight
+		
+	def getWidth(self):
+		return self.squaresWidth
+
 if __name__ == "__main__":
    main()
