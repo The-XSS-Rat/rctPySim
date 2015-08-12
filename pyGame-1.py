@@ -10,6 +10,7 @@ currAttr = "Marry-go-round"
 currAttrWidth = 5
 currAttrHeight = 10
 
+
 screen = pygame.display.set_mode((xres, yres))
 screen.fill((255,255,255))
 
@@ -24,9 +25,19 @@ def makeGrid():
         pygame.draw.line(screen,(255,0,0),(0,y), (xres,y),1)
         done = 0
     pygame.draw.line(screen,(0,0,255),(70,0),(70,yres),3)
+    fillMenu()
     pygame.display.flip()
         
+
+def fillMenu():
+    pygame.draw.rect(screen,(204,0,102),(0,0,20,20))
+    pygame.draw.rect(screen,(255,255,0),(0,30,20,20))
+
 def fillSquare(event):
+    global currAttrWidth
+    global currAttr
+    global currAttrHeight
+
     attr1 = Attraction(currAttrWidth,currAttrHeight)
 
     h=0
@@ -45,7 +56,16 @@ def fillSquare(event):
             h+=1
     else:
         print "menu tapped"
-    
+        if orgXP>=0 and orgXP<=20 and yp>=0 and yp<=20:
+            currAttr = "Ferris-wheel"
+            currAttrWidth = 2
+	    currAttrHeight = 4
+
+        if orgXP>=0 and orgXP<=20 and yp>=30 and yp<=50:
+            currAttr = "Haunted house"
+            currAttrWidth = 1
+            currAttrHeight = 8
+
     pygame.display.flip()
     
 #The main loop
