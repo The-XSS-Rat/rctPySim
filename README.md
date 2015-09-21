@@ -3,6 +3,7 @@ A pyGame program to make rct in birdseye view with focus on the management side.
 
 For now the script is just in the skeleton building phase as i like to call it but it is meant to be very modular.
 It is written in Python 2.7 in pyGame.
+But it is in the process of being converted to Python 3.4.3
 
 to run the script simply download it and run it using the command "Pythonx.x pyGame-1.py" where x.x stands for your version.
 Like described before this script is developed on version 2.7 and is also only tested on 2.7 for the time being.

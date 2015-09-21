@@ -55,11 +55,11 @@ def fillSquare(event):
             yp+=10
             h+=1
     else:
-        print "menu tapped"
+        print("menu tapped")
         if orgXP>=0 and orgXP<=20 and yp>=0 and yp<=20:
             currAttr = "Ferris-wheel"
             currAttrWidth = 2
-	    currAttrHeight = 4
+        currAttrHeight = 4
 
         if orgXP>=0 and orgXP<=20 and yp>=30 and yp<=50:
             currAttr = "Haunted house"
@@ -92,19 +92,19 @@ def main():
             if e.type == MOUSEBUTTONDOWN:
                  
                  if e.button == 1:
-                     print "left button clicked"
+                     print("left button clicked")
                      fillSquare(e)
                  elif e.button == 2:
-                     print "middle button clicked"
+                     print("middle button clicked")
                  elif e.button == 3:
-                     print "right button clicked"
+                     print("right button clicked")
                  elif e.button == 4:
-                     print "scrolling forward"
+                     print("scrolling forward")
                  elif e.button == 5:
-                     print "scrolling backward"
+                     print("scrolling backward")
                  else:
-                     print "some cool button"
-                 print e.pos
+                     print("some cool button")
+                 print(e.pos)
         if done:
             break
             
