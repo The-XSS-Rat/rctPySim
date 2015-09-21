@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import pygame,os,sys
-from pygame.locals import *
+from pygame import *
 from clAttraction import Attraction
 
 xres = 640
@@ -41,11 +41,11 @@ def fillSquare(event):
     attr1 = Attraction(currAttrWidth,currAttrHeight)
 
     h=0
-    yp = (event.pos[1]/10)*10+1 #1 is the y position
-    orgXP = (event.pos[0]/10)*10+1 
+    yp = (event.pos[1]/10)*10 #1 is the y position
+    orgXP = (event.pos[0]/10)*10
     if orgXP >= 70:
         while h <= attr1.getHeight():
-            xp = (event.pos[0]/10)*10+1 #0 is the x position
+            xp = (event.pos[0]/10)*10#0 is the x position
             rectange = (xp,yp,10,10)
             w=0
             while w <= attr1.getWidth():
