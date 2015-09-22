@@ -17,6 +17,7 @@ screen.fill((255,255,255))
 def makeGrid():
     for x in range(0,640,10):
         x = x + 10
+        print(x)
         pygame.draw.line(screen,(255,0,0),(x,0),(x,yres),1)
         
         
@@ -41,11 +42,13 @@ def fillSquare(event):
     attr1 = Attraction(currAttrWidth,currAttrHeight)
 
     h=0
-    yp = (event.pos[1]/10)*10 #1 is the y position
-    orgXP = (event.pos[0]/10)*10
+    yp = int(event.pos[1]/10)*10 + 1#1 is the y position
+    orgXP = int(event.pos[0]/10)*10
     if orgXP >= 70:
         while h <= attr1.getHeight():
-            xp = (event.pos[0]/10)*10#0 is the x position
+            xp = int(event.pos[0]/10)*10 + 1#0 is the x position
+            print("xp=" + str(xp))
+
             rectange = (xp,yp,10,10)
             w=0
             while w <= attr1.getWidth():
@@ -59,7 +62,7 @@ def fillSquare(event):
         if orgXP>=0 and orgXP<=20 and yp>=0 and yp<=20:
             currAttr = "Ferris-wheel"
             currAttrWidth = 2
-        currAttrHeight = 4
+            currAttrHeight = 4
 
         if orgXP>=0 and orgXP<=20 and yp>=30 and yp<=50:
             currAttr = "Haunted house"
