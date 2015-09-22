@@ -6,9 +6,12 @@ from clAttraction import Attraction
 xres = 640
 yres = 480
 
+
+
 currAttr = "Marry-go-round"
 currAttrWidth = 5
 currAttrHeight = 10
+currAttrColor = (0, 255, 0)
 
 
 screen = pygame.display.set_mode((xres, yres))
@@ -38,8 +41,9 @@ def fillSquare(event):
     global currAttrWidth
     global currAttr
     global currAttrHeight
+    global currAttrColor
 
-    attr1 = Attraction(currAttrWidth,currAttrHeight)
+    attr1 = Attraction(currAttrWidth,currAttrHeight,currAttrColor)
 
     h=0
     yp = int(event.pos[1]/10)*10 + 1#1 is the y position
@@ -52,7 +56,7 @@ def fillSquare(event):
             rectange = (xp,yp,10,10)
             w=0
             while w <= attr1.getWidth():
-                pygame.draw.rect(screen, (0, 255, 0), (xp, yp, 9, 9))
+                pygame.draw.rect(screen, attr1.getColor(), (xp, yp, 9, 9))
                 xp += 10
                 w+=1
             yp+=10
@@ -63,11 +67,13 @@ def fillSquare(event):
             currAttr = "Ferris-wheel"
             currAttrWidth = 2
             currAttrHeight = 4
+            currAttrColor = (255,0,0)
 
         if orgXP>=0 and orgXP<=20 and yp>=30 and yp<=50:
             currAttr = "Haunted house"
             currAttrWidth = 1
             currAttrHeight = 8
+            currAttrColor = (0,0,255)
 
     pygame.display.flip()
     
