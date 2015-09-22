@@ -6,7 +6,7 @@ from clAttraction import Attraction
 xres = 640
 yres = 480
 
-
+Attractions = []
 
 currAttr = "Marry-go-round"
 currAttrWidth = 5
@@ -43,7 +43,8 @@ def fillSquare(event):
     global currAttrHeight
     global currAttrColor
 
-    attr1 = Attraction(currAttrWidth,currAttrHeight,currAttrColor)
+    Attractions = Attraction(currAttrWidth,currAttrHeight,currAttrColor)
+    attr1 = Attractions[len(Attractions)]
 
     h=0
     yp = int(event.pos[1]/10)*10 + 1#1 is the y position
