@@ -7,6 +7,7 @@ xres = 640
 yres = 480
 
 Attractions = []
+Grid = []
 
 currAttr = "Marry-go-round"
 currAttrWidth = 5
@@ -18,16 +19,19 @@ screen = pygame.display.set_mode((xres, yres))
 screen.fill((255,255,255))
 
 def makeGrid():
+    global Grid
+    
     for x in range(0,640,10):
         x = x + 10
-        print(x)
-        pygame.draw.line(screen,(255,0,0),(x,0),(x,yres),1)
-        
+        pygame.draw.line(screen,(255,0,0),(x,0),(x,yres),1)        
         
     for y in range(0,480,10):
         y = y + 10
         pygame.draw.line(screen,(255,0,0),(0,y), (xres,y),1)
         done = 0
+    Grid = [[0 for x in range(int(xres/10))] for y in range(int(yres/10))]
+    Grid[30][15] = 1
+    print(Grid)
     pygame.draw.line(screen,(0,0,255),(70,0),(70,yres),3)
     fillMenu()
     pygame.display.flip()
@@ -42,9 +46,10 @@ def fillSquare(event):
     global currAttr
     global currAttrHeight
     global currAttrColor
-
-    Attractions = Attraction(currAttrWidth,currAttrHeight,currAttrColor)
-    attr1 = Attractions[len(Attractions)]
+    global Grid
+    
+    Attractions.append(Attraction(currAttrWidth,currAttrHeight,currAttrColor))
+    attr1 = Attractions[len(Attractions)-1]
 
     h=0
     yp = int(event.pos[1]/10)*10 + 1#1 is the y position
@@ -52,14 +57,38 @@ def fillSquare(event):
     if orgXP >= 70:
         while h <= attr1.getHeight():
             xp = int(event.pos[0]/10)*10 + 1#0 is the x position
-            print("xp=" + str(xp))
-
             rectange = (xp,yp,10,10)
             w=0
             while w <= attr1.getWidth():
-                pygame.draw.rect(screen, attr1.getColor(), (xp, yp, 9, 9))
-                xp += 10
-                w+=1
+                try:
+                    if Grid[int(yp/10)][int(xp/10)] == 1:
+                        print("Er kan hier geen blok van deze grote worden geplaatst. Er staat reeds een blok in de weg.")
+                        return
+                    else:
+                        xp += 10
+                        w+=1
+                except:
+                    print("Er kan hier geen blok van deze grote worden geplaatst. Dit valt buiten het venster")
+                    return
+            yp+=10
+            h+=1
+        h=0
+        yp = int(event.pos[1]/10)*10 + 1#1 is the y position
+        orgXP = int(event.pos[0]/10)*10
+    
+        while h <= attr1.getHeight():
+            xp = int(event.pos[0]/10)*10 + 1#0 is the x position
+            rectange = (xp,yp,10,10)
+            w=0
+            while w <= attr1.getWidth():
+                try:
+                    pygame.draw.rect(screen, attr1.getColor(), (xp, yp, 9, 9))
+                    Grid[int(yp/10)][int(xp/10)] = 1
+                    xp += 10
+                    w+=1
+                except:
+                    print("Fout bij het plaatsen van blok.")
+                    break
             yp+=10
             h+=1
     else:
@@ -68,13 +97,13 @@ def fillSquare(event):
             currAttr = "Ferris-wheel"
             currAttrWidth = 2
             currAttrHeight = 4
-            currAttrColor = (255,0,0)
+            currAttrColor = (204,0,102)
 
         if orgXP>=0 and orgXP<=20 and yp>=30 and yp<=50:
             currAttr = "Haunted house"
             currAttrWidth = 1
             currAttrHeight = 8
-            currAttrColor = (0,0,255)
+            currAttrColor = (255,255,0)
 
     pygame.display.flip()
     
