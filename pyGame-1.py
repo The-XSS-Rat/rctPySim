@@ -129,7 +129,7 @@ def main():
         myfont = pygame.font.SysFont("monospace", 15)
 
         # Erase previous labels
-        pygame.draw.rect(screen,(255,255,255),(640,12,660,20))
+        pygame.draw.rect(screen,(255,255,255),(641,12,660,20))
 
         # render text
         labelTextVisitors = myfont.render("Num. of users", 1, (0,0,0))
