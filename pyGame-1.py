@@ -3,6 +3,7 @@ import pygame,os,sys
 from pygame import *
 from clAttraction import Attraction
 from clPeople import *
+import time
 
 xres = 740
 gameXRes = 640
@@ -125,6 +126,7 @@ def main():
     makeGrid()
     
     while 1:
+        time.sleep(0.16)
         # initialize font; must be called after 'pygame.init()' to avoid 'Font not Initialized' error
         myfont = pygame.font.SysFont("monospace", 15)
 
