@@ -2,8 +2,10 @@
 import pygame,os,sys
 from pygame import *
 from clAttraction import Attraction
+from clPeople import *
 
-xres = 640
+xres = 740
+gameXRes = 640
 yres = 480
 
 Attractions = []
@@ -20,19 +22,18 @@ screen.fill((255,255,255))
 
 def makeGrid():
     global Grid
-    
-    for x in range(0,640,10):
+
+    for x in range(70,gameXRes+10,10):
+        pygame.draw.line(screen,(255,0,0),(x,0),(x,yres),1)
         x = x + 10
-        pygame.draw.line(screen,(255,0,0),(x,0),(x,yres),1)        
         
-    for y in range(0,480,10):
+    for y in range(0,490,10):
+        pygame.draw.line(screen,(255,0,0),(70,y), (gameXRes,y),1)
         y = y + 10
-        pygame.draw.line(screen,(255,0,0),(0,y), (xres,y),1)
         done = 0
-    Grid = [[0 for x in range(int(xres/10))] for y in range(int(yres/10))]
+    Grid = [[0 for x in range(int(gameXRes/10))] for y in range(int(yres/10))]
     Grid[30][15] = 1
     print(Grid)
-    pygame.draw.line(screen,(0,0,255),(70,0),(70,yres),3)
     fillMenu()
     pygame.display.flip()
         
@@ -109,21 +110,35 @@ def fillSquare(event):
     
 #The main loop
 def main():
+    pygame.font.init()
     x = 10
     y = 10
-#  pygame.draw.rect(screen,(0,0,255),(50,50,50,50),1)
-#vertical lines
-    pygame.draw.line(screen,(255,0,0),(x,0),(x,yres),1)
+    #  pygame.draw.rect(screen,(0,0,255),(50,50,50,50),1)
+    #vertical lines
+    #pygame.draw.line(screen,(255,0,0),(x,0),(x,yres),1)
     
-#horizontal lines
-    pygame.draw.line(screen,(255,0,0),(0,10),(xres,y),1)
+    #horizontal lines
+    #pygame.draw.line(screen,(255,0,0),(0,10),(gameXRes,y),1)
     
-    pygame.display.flip()
     done = 0
     
     makeGrid()
-        
+    
     while 1:
+        # initialize font; must be called after 'pygame.init()' to avoid 'Font not Initialized' error
+        myfont = pygame.font.SysFont("monospace", 15)
+
+        # Erase previous labels
+        pygame.draw.rect(screen,(255,255,255),(640,12,660,20))
+
+        # render text
+        labelTextVisitors = myfont.render("Num. of users", 1, (0,0,0))
+        labelCounterVisitors = myfont.render(getPeopleStr(), 1, (0,0,0))
+        screen.blit(labelTextVisitors, (640, 0))
+        screen.blit(labelCounterVisitors, (640, 12))
+
+        pygame.display.flip()
+
         for e in pygame.event.get():
             if e.type == QUIT or (e.type == KEYUP and e.key == K_ESCAPE):
                 done = 1
@@ -146,8 +161,6 @@ def main():
                  print(e.pos)
         if done:
             break
-            
-
 
 if __name__ == "__main__":
    main()
