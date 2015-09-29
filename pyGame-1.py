@@ -21,7 +21,6 @@ addedPeople = 1
 maxPeopleAdded = 3
 currAtrrCost = 4500
 
-
 screen = pygame.display.set_mode((xres, yres))
 screen.fill((255,255,255))
 
@@ -37,14 +36,42 @@ def makeGrid():
         y = y + 10
         done = 0
     Grid = [[0 for x in range(int(gameXRes/10))] for y in range(int(yres/10))]
-    Grid[30][15] = 1
+    # Do not know why this is in here: Grid[30][15] = 1
     fillMenu()
     pygame.display.flip()
         
 
 def fillMenu():
+    myfont = pygame.font.SysFont("monospace", 10)
+
+    # Ferris-Wheel
     pygame.draw.rect(screen,(204,0,102),(0,0,20,20))
-    pygame.draw.rect(screen,(255,255,0),(0,30,20,20))
+    labelTextAttrRC = myfont.render("Ferris-", 1, (0,0,0))
+    labelTextAttrRC2 = myfont.render("Wheel", 1, (0,0,0))
+    labelPriceAttrRC = myfont.render("€ 1.500", 1, (0,0,0))
+    screen.blit(labelTextAttrRC, (0, 20))
+    screen.blit(labelTextAttrRC2, (0, 30))
+    screen.blit(labelPriceAttrRC, (0, 40))
+    
+    # Haunted Mansion
+    pygame.draw.rect(screen,(255,255,0),(0,70,20,20))
+    labelTextAttrRC = myfont.render("Haunted-", 1, (0,0,0))
+    labelTextAttrRC2 = myfont.render("Mansion", 1, (0,0,0))
+    labelPriceAttrRC = myfont.render("€ 8.500", 1, (0,0,0))
+    screen.blit(labelTextAttrRC, (0, 90))
+    screen.blit(labelTextAttrRC2, (0, 100))
+    screen.blit(labelPriceAttrRC, (0, 110))
+    
+    # Roller Coaster
+    pygame.draw.rect(screen,(61,7,12),(0,140,20,20))
+    # render text
+    labelTextAttrRC = myfont.render("Roller-", 1, (0,0,0))
+    labelTextAttrRC2 = myfont.render("Coaster", 1, (0,0,0))
+    labelPriceAttrRC = myfont.render("€ 13.000", 1, (0,0,0))
+    screen.blit(labelTextAttrRC, (0, 160))
+    screen.blit(labelTextAttrRC2, (0, 170))
+    screen.blit(labelPriceAttrRC, (0, 180))
+    
 
 def fillSquare(event):
     global currAttrWidth
@@ -120,7 +147,7 @@ def fillSquare(event):
             maxPeopleAdded = 10
             currAtrrCost = 1500
 
-        if orgXP>=0 and orgXP<=20 and yp>=30 and yp<=50:
+        if orgXP>=0 and orgXP<=20 and yp>=70 and yp<=90:
             currAttr = "Haunted house"
             currAttrWidth = 3
             currAttrHeight = 4
@@ -128,6 +155,14 @@ def fillSquare(event):
             addedPeople = 20
             maxPeopleAdded = 20
             currAtrrCost = 8500
+        if orgXP>=0 and orgXP<=20 and yp>=140 and yp<=160:
+            currAttr = "Roller Coaster"
+            currAttrWidth = 8
+            currAttrHeight = 5
+            currAttrColor = (61,7,12)
+            addedPeople = 100
+            maxPeopleAdded = 200
+            currAtrrCost = 13000
 
     pygame.display.flip()
     
@@ -148,7 +183,8 @@ def main():
     makeGrid()
     
     while 1:
-        time.sleep(0.16)
+        time.sleep(0.1)
+        generateCash()
         # initialize font; must be called after 'pygame.init()' to avoid 'Font not Initialized' error
         myfont = pygame.font.SysFont("monospace", 15)
 

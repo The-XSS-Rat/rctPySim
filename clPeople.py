@@ -13,7 +13,7 @@ def generatePeople():
 
     chancePlusMinus = randint(0,100)
     
-    if(randint(0,1000) < 200):
+    if(randint(0,1000) < 100):
         if chancePlusMinus >= (100 - chanceOfPlus) and (visitorAmount<maxAmount):
             visitorAmount += randint(0,3)
         else:
