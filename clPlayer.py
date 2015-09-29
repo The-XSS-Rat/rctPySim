@@ -5,7 +5,7 @@ from clPeople import getPeopleInt
 
 locale.setlocale( locale.LC_ALL, '' )
 
-playerCash = 15000000
+playerCash = 4500
 
 def getCashStr():
     return str(locale.currency(playerCash,grouping=True))

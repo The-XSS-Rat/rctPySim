@@ -64,7 +64,7 @@ def fillMenu():
     #screen.blit(pygame.transform.scale(spaceSimImg,(20,20)),(0,70))
     labelTextAttrRC = myfont.render("Space-", 1, (0,0,0))
     labelTextAttrRC2 = myfont.render("Sim", 1, (0,0,0))
-    labelPriceAttrRC = myfont.render("€ 8.500", 1, (0,0,0))
+    labelPriceAttrRC = myfont.render("€ 3.200", 1, (0,0,0))
     screen.blit(labelTextAttrRC, (0, 90))
     screen.blit(labelTextAttrRC2, (0, 100))
     screen.blit(labelPriceAttrRC, (0, 110))
@@ -78,6 +78,16 @@ def fillMenu():
     screen.blit(labelTextAttrRC, (0, 160))
     screen.blit(labelTextAttrRC2, (0, 170))
     screen.blit(labelPriceAttrRC, (0, 180))
+
+    # Disk-o
+    pygame.draw.rect(screen,(106,207,72),(0,210,20,20))
+    # render text
+    labelTextAttrRC = myfont.render("Disk-", 1, (0,0,0))
+    labelTextAttrRC2 = myfont.render("o", 1, (0,0,0))
+    labelPriceAttrRC = myfont.render("€ 4.500", 1, (0,0,0))
+    screen.blit(labelTextAttrRC, (0, 230))
+    screen.blit(labelTextAttrRC2, (0, 240))
+    screen.blit(labelPriceAttrRC, (0, 250))
     
 
 def fillSquare(event):
@@ -149,21 +159,28 @@ def fillSquare(event):
         #attraction list
         if orgXP>=0 and orgXP<=20 and yp>=0 and yp<=20:
             currAttr = "Merry-go-round"
-            currAttrWidth = 2
+            currAttrWidth = 4
             currAttrHeight = 4
             currAttrColor = (204,0,102)
             addedPeople = 5
             maxPeopleAdded = 10
             currAtrrCost = 1500
-
         if orgXP>=0 and orgXP<=20 and yp>=70 and yp<=90:
             currAttr = "Space Sim"
-            currAttrWidth = 3
+            currAttrWidth = 4
             currAttrHeight = 4
             currAttrColor = (255,255,0)
             addedPeople = 20
             maxPeopleAdded = 20
-            currAtrrCost = 8500
+            currAtrrCost = 3200
+        if orgXP>=0 and orgXP<=20 and yp>=210 and yp<=230:
+            currAttr = "Disk-o"
+            currAttrWidth = 6
+            currAttrHeight = 2
+            currAttrColor = (106,207,72)
+            addedPeople = 30
+            maxPeopleAdded = 50
+            currAtrrCost = 4500
         if orgXP>=0 and orgXP<=20 and yp>=140 and yp<=160:
             currAttr = "Roller Coaster"
             currAttrWidth = 8
@@ -227,8 +244,10 @@ def main():
                      print("right button clicked")
                  elif e.button == 4:
                      print("scrolling forward")
+                     addCash(1000)
                  elif e.button == 5:
                      print("scrolling backward")
+                     lowerCash(1000)
                  else:
                      print("some cool button")
                  print(e.pos)
