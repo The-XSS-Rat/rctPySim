@@ -2,8 +2,7 @@
 from random import randint
 
 visitorAmount = 0
-minAmount = 500
-maxAmount = 80
+maxAmount = 45
 
 chanceOfPlus = 55
 
@@ -28,6 +27,13 @@ def getPeopleStr():
 def getPeopleInt():
     return int(generatePeople())
 
-def setMax(Amount):
-    maxAmount = Amount
+def setMaxVisitors(Amount):
+    global maxAmount
+    maxAmount += Amount
+
+def AddToVisitors(Amount):
+    global visitorAmount
+    visitorAmount += Amount
+
+
     

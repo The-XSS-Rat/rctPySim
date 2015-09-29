@@ -3,9 +3,10 @@ import pygame,os,sys
 from pygame import *
 from clAttraction import Attraction
 from clPeople import *
+from clPlayer import *
 import time
 
-xres = 740
+xres = 840
 gameXRes = 640
 yres = 480
 
@@ -13,9 +14,11 @@ Attractions = []
 Grid = []
 
 currAttr = "Marry-go-round"
-currAttrWidth = 5
-currAttrHeight = 10
+currAttrWidth = 2
+currAttrHeight = 2
 currAttrColor = (0, 255, 0)
+addedPeople = 1
+maxPeopleAdded = 3
 
 
 screen = pygame.display.set_mode((xres, yres))
@@ -34,7 +37,6 @@ def makeGrid():
         done = 0
     Grid = [[0 for x in range(int(gameXRes/10))] for y in range(int(yres/10))]
     Grid[30][15] = 1
-    print(Grid)
     fillMenu()
     pygame.display.flip()
         
@@ -49,6 +51,9 @@ def fillSquare(event):
     global currAttrHeight
     global currAttrColor
     global Grid
+    global addedPeople
+    global maxPeopleAdded
+    
     
     Attractions.append(Attraction(currAttrWidth,currAttrHeight,currAttrColor))
     attr1 = Attractions[len(Attractions)-1]
@@ -93,6 +98,8 @@ def fillSquare(event):
                     break
             yp+=10
             h+=1
+        setMaxVisitors(maxPeopleAdded)
+        AddToVisitors(addedPeople)
     else:
         print("menu tapped")
         if orgXP>=0 and orgXP<=20 and yp>=0 and yp<=20:
@@ -100,12 +107,16 @@ def fillSquare(event):
             currAttrWidth = 2
             currAttrHeight = 4
             currAttrColor = (204,0,102)
+            addedPeople = 5
+            maxPeopleAdded = 10
 
         if orgXP>=0 and orgXP<=20 and yp>=30 and yp<=50:
             currAttr = "Haunted house"
-            currAttrWidth = 1
-            currAttrHeight = 8
+            currAttrWidth = 3
+            currAttrHeight = 4
             currAttrColor = (255,255,0)
+            addedPeople = 20
+            maxPeopleAdded = 20
 
     pygame.display.flip()
     
@@ -134,17 +145,21 @@ def main():
         pygame.draw.rect(screen,(255,255,255),(641,12,660,20))
 
         # render text
-        labelTextVisitors = myfont.render("Num. of users", 1, (0,0,0))
+        labelTextVisitors = myfont.render("Num. of visitors", 1, (0,0,0))
         labelCounterVisitors = myfont.render(getPeopleStr(), 1, (0,0,0))
+        labelTextMoney= myfont.render("Money", 1, (0,0,0))
+        labelCounterMoney = myfont.render(getCashStr(), 1, (0,0,0))
         screen.blit(labelTextVisitors, (640, 0))
-        screen.blit(labelCounterVisitors, (640, 12))
+        screen.blit(labelCounterVisitors, (640, 13))
+        screen.blit(labelTextMoney, (640, 26))
+        screen.blit(labelCounterMoney, (640, 39))
 
         pygame.display.flip()
 
         for e in pygame.event.get():
             if e.type == QUIT or (e.type == KEYUP and e.key == K_ESCAPE):
-                done = 1
-                break
+                pygame.quit()
+                sys.exit()
             if e.type == MOUSEBUTTONDOWN:
                  
                  if e.button == 1:
