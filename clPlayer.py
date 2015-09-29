@@ -25,7 +25,5 @@ def generateCash():
     global playerCash
     if(randint(0,100)<10):
         playerCash += randint(0,1) * getPeopleInt()
-    print(playerCash)
-
 
     

@@ -24,6 +24,9 @@ currAtrrCost = 4500
 screen = pygame.display.set_mode((xres, yres))
 screen.fill((255,255,255))
 
+#spaceSimImg = pygame.image.load("data/space-sim.PNG")
+#merryGoRoundImg = pygame.image.load("data/merry-go-round.PNG")
+
 def makeGrid():
     global Grid
 
@@ -42,21 +45,25 @@ def makeGrid():
         
 
 def fillMenu():
+    #global merryGoRoundImg, spaceSimImg
+    
     myfont = pygame.font.SysFont("monospace", 10)
 
-    # Ferris-Wheel
+    # Merry-go-round
     pygame.draw.rect(screen,(204,0,102),(0,0,20,20))
-    labelTextAttrRC = myfont.render("Ferris-", 1, (0,0,0))
-    labelTextAttrRC2 = myfont.render("Wheel", 1, (0,0,0))
+    #screen.blit(pygame.transform.scale(merryGoRoundImg,(20,20)),(0,0))
+    labelTextAttrRC = myfont.render("Merry-go-", 1, (0,0,0))
+    labelTextAttrRC2 = myfont.render("Round", 1, (0,0,0))
     labelPriceAttrRC = myfont.render("€ 1.500", 1, (0,0,0))
     screen.blit(labelTextAttrRC, (0, 20))
     screen.blit(labelTextAttrRC2, (0, 30))
     screen.blit(labelPriceAttrRC, (0, 40))
     
-    # Haunted Mansion
+    # Space Sim
     pygame.draw.rect(screen,(255,255,0),(0,70,20,20))
-    labelTextAttrRC = myfont.render("Haunted-", 1, (0,0,0))
-    labelTextAttrRC2 = myfont.render("Mansion", 1, (0,0,0))
+    #screen.blit(pygame.transform.scale(spaceSimImg,(20,20)),(0,70))
+    labelTextAttrRC = myfont.render("Space-", 1, (0,0,0))
+    labelTextAttrRC2 = myfont.render("Sim", 1, (0,0,0))
     labelPriceAttrRC = myfont.render("€ 8.500", 1, (0,0,0))
     screen.blit(labelTextAttrRC, (0, 90))
     screen.blit(labelTextAttrRC2, (0, 100))
@@ -114,6 +121,8 @@ def fillSquare(event):
         
         # substract the amount from players cash
         if(getCashInt()>=attr1.getCost()):
+            #screen.blit(pygame.transform.scale(merryGoRoundImg,(attr1.getWidth()*10,attr1.getHeight()*10)),(xp,yp))
+
             while h <= attr1.getHeight():
                 xp = int(event.pos[0]/10)*10 + 1#0 is the x position
                 rectange = (xp,yp,10,10)
@@ -139,7 +148,7 @@ def fillSquare(event):
         print("menu tapped")
         #attraction list
         if orgXP>=0 and orgXP<=20 and yp>=0 and yp<=20:
-            currAttr = "Ferris-wheel"
+            currAttr = "Merry-go-round"
             currAttrWidth = 2
             currAttrHeight = 4
             currAttrColor = (204,0,102)
@@ -148,7 +157,7 @@ def fillSquare(event):
             currAtrrCost = 1500
 
         if orgXP>=0 and orgXP<=20 and yp>=70 and yp<=90:
-            currAttr = "Haunted house"
+            currAttr = "Space Sim"
             currAttrWidth = 3
             currAttrHeight = 4
             currAttrColor = (255,255,0)
