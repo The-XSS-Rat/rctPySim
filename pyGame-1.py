@@ -19,6 +19,7 @@ currAttrHeight = 2
 currAttrColor = (0, 255, 0)
 addedPeople = 1
 maxPeopleAdded = 3
+currAtrrCost = 4500
 
 
 screen = pygame.display.set_mode((xres, yres))
@@ -53,9 +54,10 @@ def fillSquare(event):
     global Grid
     global addedPeople
     global maxPeopleAdded
+    global currAtrrCost
     
     
-    Attractions.append(Attraction(currAttrWidth,currAttrHeight,currAttrColor))
+    Attractions.append(Attraction(currAttrWidth,currAttrHeight,currAttrColor,currAtrrCost))
     attr1 = Attractions[len(Attractions)-1]
 
     h=0
@@ -69,39 +71,46 @@ def fillSquare(event):
             while w <= attr1.getWidth():
                 try:
                     if Grid[int(yp/10)][int(xp/10)] == 1:
-                        print("Er kan hier geen blok van deze grote worden geplaatst. Er staat reeds een blok in de weg.")
+                        print("Er kan hier geen blok van deze grote worden geplaatst. Er staat reeds een blok in de weg./ No blocked can be placed here, already a block underlying")
                         return
                     else:
                         xp += 10
                         w+=1
                 except:
-                    print("Er kan hier geen blok van deze grote worden geplaatst. Dit valt buiten het venster")
+                    print("Er kan hier geen blok van deze grote worden geplaatst. Dit valt buiten het venster/No blocked can be placed here, outside of window space")
                     return
             yp+=10
             h+=1
         h=0
         yp = int(event.pos[1]/10)*10 + 1#1 is the y position
         orgXP = int(event.pos[0]/10)*10
-    
-        while h <= attr1.getHeight():
-            xp = int(event.pos[0]/10)*10 + 1#0 is the x position
-            rectange = (xp,yp,10,10)
-            w=0
-            while w <= attr1.getWidth():
-                try:
-                    pygame.draw.rect(screen, attr1.getColor(), (xp, yp, 9, 9))
-                    Grid[int(yp/10)][int(xp/10)] = 1
-                    xp += 10
-                    w+=1
-                except:
-                    print("Fout bij het plaatsen van blok.")
-                    break
-            yp+=10
-            h+=1
-        setMaxVisitors(maxPeopleAdded)
-        AddToVisitors(addedPeople)
+        
+        # substract the amount from players cash
+        if(getCashInt()>=attr1.getCost()):
+            while h <= attr1.getHeight():
+                xp = int(event.pos[0]/10)*10 + 1#0 is the x position
+                rectange = (xp,yp,10,10)
+                w=0
+                while w <= attr1.getWidth():
+                    try:
+                        pygame.draw.rect(screen, attr1.getColor(), (xp, yp, 9, 9))
+                        Grid[int(yp/10)][int(xp/10)] = 1
+                        xp += 10
+                        w+=1
+                    except:
+                        print("Fout bij het plaatsen van blok./Error placing block.")
+                        break
+                yp+=10
+                h+=1
+            lowerCash(attr1.getCost())
+            setMaxVisitors(maxPeopleAdded)
+            AddToVisitors(addedPeople)
+        else:
+            print("Niet genoeg geld/Not enough cash")
+        
     else:
         print("menu tapped")
+        #attraction list
         if orgXP>=0 and orgXP<=20 and yp>=0 and yp<=20:
             currAttr = "Ferris-wheel"
             currAttrWidth = 2
@@ -109,6 +118,7 @@ def fillSquare(event):
             currAttrColor = (204,0,102)
             addedPeople = 5
             maxPeopleAdded = 10
+            currAtrrCost = 1500
 
         if orgXP>=0 and orgXP<=20 and yp>=30 and yp<=50:
             currAttr = "Haunted house"
@@ -117,6 +127,7 @@ def fillSquare(event):
             currAttrColor = (255,255,0)
             addedPeople = 20
             maxPeopleAdded = 20
+            currAtrrCost = 8500
 
     pygame.display.flip()
     
@@ -142,7 +153,7 @@ def main():
         myfont = pygame.font.SysFont("monospace", 15)
 
         # Erase previous labels
-        pygame.draw.rect(screen,(255,255,255),(641,12,660,20))
+        pygame.draw.rect(screen,(255,255,255),(641,0,740,100))
 
         # render text
         labelTextVisitors = myfont.render("Num. of visitors", 1, (0,0,0))

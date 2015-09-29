@@ -15,12 +15,10 @@ def getCashInt():
 def addCash(Amount):
     global playerCash
     playerCash += Amount
-    print(playerCash)
 
 def lowerCash(Amount):
     global playerCash
     playerCash -= Amount
-    print(visitorAmount)
 
 
     
