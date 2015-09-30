@@ -177,16 +177,16 @@ def fillSquare(event):
         if orgXP>=0 and orgXP<=20 and yp>=140 and yp<=160:
             currAttr = "Haunted mansion"
             image = getImage("hauntedMansionImg")
-            currAttrWidth = 5
-            currAttrHeight = 5
+            currAttrWidth = 4
+            currAttrHeight = 4
             currAttrColor = (106,207,72)
             addedPeople = 30
             maxPeopleAdded = 50
             currAtrrCost = 4500
         if orgXP>=0 and orgXP<=20 and yp>=210 and yp<=230:
             currAttr = "Water Slide"
-            currAttrWidth = 8
-            currAttrHeight = 8
+            currAttrWidth = 4
+            currAttrHeight = 4
             currAttrColor = (61,7,12)
             image = getImage("waterSlideImg")
             addedPeople = 100
