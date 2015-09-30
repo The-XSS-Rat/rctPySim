@@ -8,6 +8,9 @@ It is written in Python 3.2.4 and uses pyGame 1.9.2a0
 to run the script simply download it and run it using the command "Pythonx.x pyGame-1.py" where x.x stands for your version.
 Like described before this script is developed on version 3.2.4 and is also only tested on 3.2.4 for the time being.
 
+The data files are needed for images
+The XFC files are only needed if editing has to be done.
+
 The intention is to add the following featuress:
 - Physical button and LED support(Rpi only)
 - Attractions take a certain number of squares with a limited amount of squares available

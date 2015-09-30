@@ -48,7 +48,7 @@ def fillMenu():
     myfont = pygame.font.SysFont("monospace", 10)
 
     # Merry-go-round
-    pygame.draw.rect(screen,(204,0,102),(0,0,20,20))
+    #pygame.draw.rect(screen,(204,0,102),(0,0,20,20))
     screen.blit(pygame.transform.scale(getImage("merryGoRoundImg"),(20,20)),(0,0))
     labelTextAttrRC = myfont.render("Merry-go-", 1, (0,0,0))
     labelTextAttrRC2 = myfont.render("Round", 1, (0,0,0))
@@ -67,11 +67,12 @@ def fillMenu():
     screen.blit(labelTextAttrRC2, (0, 100))
     screen.blit(labelPriceAttrRC, (0, 110))
     
-    # Roller Coaster
-    pygame.draw.rect(screen,(61,7,12),(0,140,20,20))
+    # Water slide
+    #pygame.draw.rect(screen,(61,7,12),(0,140,20,20))
+    screen.blit(pygame.transform.scale(getImage("waterSlideImg"),(20,20)),(0,140))
     # render text
-    labelTextAttrRC = myfont.render("Roller-", 1, (0,0,0))
-    labelTextAttrRC2 = myfont.render("Coaster", 1, (0,0,0))
+    labelTextAttrRC = myfont.render("Water-", 1, (0,0,0))
+    labelTextAttrRC2 = myfont.render("Slide", 1, (0,0,0))
     labelPriceAttrRC = myfont.render("€ 13.000", 1, (0,0,0))
     screen.blit(labelTextAttrRC, (0, 160))
     screen.blit(labelTextAttrRC2, (0, 170))
@@ -181,10 +182,11 @@ def fillSquare(event):
             maxPeopleAdded = 50
             currAtrrCost = 4500
         if orgXP>=0 and orgXP<=20 and yp>=140 and yp<=160:
-            currAttr = "Roller Coaster"
+            currAttr = "Water Slide"
             currAttrWidth = 8
-            currAttrHeight = 5
+            currAttrHeight = 8
             currAttrColor = (61,7,12)
+            image = getImage("waterSlideImg")
             addedPeople = 100
             maxPeopleAdded = 200
             currAtrrCost = 13000
