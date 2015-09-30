@@ -3,6 +3,7 @@ import pygame,os,sys
 from pygame import *
 from clAttraction import Attraction
 from clPeople import *
+from clImages import *
 from clPlayer import *
 import time
 
@@ -21,11 +22,10 @@ addedPeople = 1
 maxPeopleAdded = 3
 currAtrrCost = 4500
 
+image = getImage("merryGoRoundImg")
+
 screen = pygame.display.set_mode((xres, yres))
 screen.fill((255,255,255))
-
-#spaceSimImg = pygame.image.load("data/space-sim.PNG")
-#merryGoRoundImg = pygame.image.load("data/merry-go-round.PNG")
 
 def makeGrid():
     global Grid
@@ -44,14 +44,12 @@ def makeGrid():
     pygame.display.flip()
         
 
-def fillMenu():
-    #global merryGoRoundImg, spaceSimImg
-    
+def fillMenu():    
     myfont = pygame.font.SysFont("monospace", 10)
 
     # Merry-go-round
     pygame.draw.rect(screen,(204,0,102),(0,0,20,20))
-    #screen.blit(pygame.transform.scale(merryGoRoundImg,(20,20)),(0,0))
+    screen.blit(pygame.transform.scale(getImage("merryGoRoundImg"),(20,20)),(0,0))
     labelTextAttrRC = myfont.render("Merry-go-", 1, (0,0,0))
     labelTextAttrRC2 = myfont.render("Round", 1, (0,0,0))
     labelPriceAttrRC = myfont.render("€ 1.500", 1, (0,0,0))
@@ -61,7 +59,7 @@ def fillMenu():
     
     # Space Sim
     pygame.draw.rect(screen,(255,255,0),(0,70,20,20))
-    #screen.blit(pygame.transform.scale(spaceSimImg,(20,20)),(0,70))
+    screen.blit(pygame.transform.scale(getImage("spaceSimImg"),(20,20)),(0,70))
     labelTextAttrRC = myfont.render("Space-", 1, (0,0,0))
     labelTextAttrRC2 = myfont.render("Sim", 1, (0,0,0))
     labelPriceAttrRC = myfont.render("€ 3.200", 1, (0,0,0))
@@ -99,9 +97,9 @@ def fillSquare(event):
     global addedPeople
     global maxPeopleAdded
     global currAtrrCost
+    global image
     
-    
-    Attractions.append(Attraction(currAttrWidth,currAttrHeight,currAttrColor,currAtrrCost))
+    Attractions.append(Attraction(currAttrWidth,currAttrHeight,currAttrColor,currAtrrCost,image))
     attr1 = Attractions[len(Attractions)-1]
 
     h=0
@@ -131,15 +129,14 @@ def fillSquare(event):
         
         # substract the amount from players cash
         if(getCashInt()>=attr1.getCost()):
-            #screen.blit(pygame.transform.scale(merryGoRoundImg,(attr1.getWidth()*10,attr1.getHeight()*10)),(xp,yp))
-
+            screen.blit(pygame.transform.scale(attr1.getImage(),((attr1.getWidth()+1)*10,(attr1.getHeight()+1)*10)),(orgXP,yp))
             while h <= attr1.getHeight():
                 xp = int(event.pos[0]/10)*10 + 1#0 is the x position
                 rectange = (xp,yp,10,10)
                 w=0
                 while w <= attr1.getWidth():
                     try:
-                        pygame.draw.rect(screen, attr1.getColor(), (xp, yp, 9, 9))
+                        #pygame.draw.rect(screen, attr1.getColor(), (xp, yp, 9, 9))
                         Grid[int(yp/10)][int(xp/10)] = 1
                         xp += 10
                         w+=1
@@ -163,6 +160,7 @@ def fillSquare(event):
             currAttrHeight = 4
             currAttrColor = (204,0,102)
             addedPeople = 5
+            image = getImage("merryGoRoundImg")
             maxPeopleAdded = 10
             currAtrrCost = 1500
         if orgXP>=0 and orgXP<=20 and yp>=70 and yp<=90:
@@ -171,6 +169,7 @@ def fillSquare(event):
             currAttrHeight = 4
             currAttrColor = (255,255,0)
             addedPeople = 20
+            image = getImage("spaceSimImg")
             maxPeopleAdded = 20
             currAtrrCost = 3200
         if orgXP>=0 and orgXP<=20 and yp>=210 and yp<=230:
