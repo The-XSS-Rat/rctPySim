@@ -66,24 +66,25 @@ def fillMenu():
     screen.blit(labelTextAttrRC, (0, 90))
     screen.blit(labelTextAttrRC2, (0, 100))
     screen.blit(labelPriceAttrRC, (0, 110))
+
+    # Haunted mansion
+    #pygame.draw.rect(screen,(106,207,72),(0,210,20,20))
+    screen.blit(pygame.transform.scale(getImage("hauntedMansionImg"),(20,20)),(0,140))
+    # render text
+    labelTextAttrRC = myfont.render("Haunted-", 1, (0,0,0))
+    labelTextAttrRC2 = myfont.render("Mansions", 1, (0,0,0))
+    labelPriceAttrRC = myfont.render("€ 4.500", 1, (0,0,0))
+    screen.blit(labelTextAttrRC, (0, 160))
+    screen.blit(labelTextAttrRC2, (0, 170))
+    screen.blit(labelPriceAttrRC, (0, 180))
     
     # Water slide
     #pygame.draw.rect(screen,(61,7,12),(0,140,20,20))
-    screen.blit(pygame.transform.scale(getImage("waterSlideImg"),(20,20)),(0,140))
+    screen.blit(pygame.transform.scale(getImage("waterSlideImg"),(20,20)),(0,210))
     # render text
     labelTextAttrRC = myfont.render("Water-", 1, (0,0,0))
     labelTextAttrRC2 = myfont.render("Slide", 1, (0,0,0))
     labelPriceAttrRC = myfont.render("€ 13.000", 1, (0,0,0))
-    screen.blit(labelTextAttrRC, (0, 160))
-    screen.blit(labelTextAttrRC2, (0, 170))
-    screen.blit(labelPriceAttrRC, (0, 180))
-
-    # Disk-o
-    pygame.draw.rect(screen,(106,207,72),(0,210,20,20))
-    # render text
-    labelTextAttrRC = myfont.render("Disk-", 1, (0,0,0))
-    labelTextAttrRC2 = myfont.render("o", 1, (0,0,0))
-    labelPriceAttrRC = myfont.render("€ 4.500", 1, (0,0,0))
     screen.blit(labelTextAttrRC, (0, 230))
     screen.blit(labelTextAttrRC2, (0, 240))
     screen.blit(labelPriceAttrRC, (0, 250))
@@ -173,15 +174,16 @@ def fillSquare(event):
             image = getImage("spaceSimImg")
             maxPeopleAdded = 20
             currAtrrCost = 3200
-        if orgXP>=0 and orgXP<=20 and yp>=210 and yp<=230:
-            currAttr = "Disk-o"
-            currAttrWidth = 6
-            currAttrHeight = 2
+        if orgXP>=0 and orgXP<=20 and yp>=140 and yp<=160:
+            currAttr = "Haunted mansion"
+            image = getImage("hauntedMansionImg")
+            currAttrWidth = 5
+            currAttrHeight = 5
             currAttrColor = (106,207,72)
             addedPeople = 30
             maxPeopleAdded = 50
             currAtrrCost = 4500
-        if orgXP>=0 and orgXP<=20 and yp>=140 and yp<=160:
+        if orgXP>=0 and orgXP<=20 and yp>=210 and yp<=230:
             currAttr = "Water Slide"
             currAttrWidth = 8
             currAttrHeight = 8
