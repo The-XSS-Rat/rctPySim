@@ -146,7 +146,7 @@ def fillSquare(event):
                 rectange = (xp,yp,10,10)
                 w=0
                 while w <= attr1.getWidth():
-                    print(int(yp/10),int(xp/10),Grid[int(yp/10)][int(xp/10)])
+                    #print(int(yp/10),int(xp/10),Grid[int(yp/10)][int(xp/10)])
                     try:
                         #pygame.draw.rect(screen, attr1.getColor(), (xp, yp, 9, 9))
                         Grid[int(yp/10)][int(xp/10)] = 1
@@ -215,8 +215,9 @@ def removeAttraction(event):
         blockSplitString.append(blockstring.split(";"))
         for idx, blocksplit in enumerate(blockSplitString):
             if((xp<(int(blocksplit[0])+int(blocksplit[2])) and xp>int(blocksplit[0])) and (yp<int(blocksplit[1])+int(blocksplit[3])) and yp > int(blocksplit[1])):
-                pygame.draw.rect(screen,(255,255,255),((int(blocksplit[0])),int(blocksplit[1]),(int(blocksplit[0])+int(blocksplit[2])),int(blocksplit[1])+int(blocksplit[3])))
-                redrawGrid()
+                pygame.draw.rect(screen,(255,255,255),((int(blocksplit[0])),int(blocksplit[1]),int(blocksplit[2]),int(blocksplit[3])))
+                print(((int(blocksplit[0])),int(blocksplit[1]),(int(blocksplit[0])+int(blocksplit[2])),int(blocksplit[1])+int(blocksplit[3])))
+                #redrawGrid()
                 
                 h=0
                 yp = int(int(blocksplit[1])/10)*10#1 is the y position
@@ -226,7 +227,7 @@ def removeAttraction(event):
                     w=0
                     while w <= int(int(blocksplit[2])/10):
                         Grid[int(yp/10)][int(xp/10)] = 0
-                        print(int(yp/10),int(xp/10),Grid[int(yp/10)][int(xp/10)])
+                        #print(int(yp/10),int(xp/10),Grid[int(yp/10)][int(xp/10)])
                         w+=1
                         xp += 10
                     h+=1
