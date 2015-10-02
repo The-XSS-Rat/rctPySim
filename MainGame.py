@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/python3.2.4
+
 import pygame,os,sys
 from pygame import *
 from clAttraction import Attraction
@@ -13,6 +14,7 @@ yres = 480
 
 Attractions = []
 Grid = []
+Blocks = []
 
 currAttr = "Marry-go-round"
 currAttrWidth = 2
@@ -39,6 +41,8 @@ def makeGrid():
         y = y + 10
         done = 0
     Grid = [[0 for x in range(int(gameXRes/10))] for y in range(int(yres/10))]
+    
+    print(Blocks)
     # Do not know why this is in here: Grid[30][15] = 1
     fillMenu()
     pygame.display.flip()
@@ -100,6 +104,7 @@ def fillSquare(event):
     global maxPeopleAdded
     global currAtrrCost
     global image
+    global Blocks
     
     Attractions.append(Attraction(currAttrWidth,currAttrHeight,currAttrColor,currAtrrCost,image))
     attr1 = Attractions[len(Attractions)-1]
@@ -116,6 +121,7 @@ def fillSquare(event):
                 try:
                     if Grid[int(yp/10)][int(xp/10)] == 1:
                         print("Er kan hier geen blok van deze grote worden geplaatst. Er staat reeds een blok in de weg./ No blocked can be placed here, already a block underlying")
+                        print(int(yp/10),int(xp/10),Grid[int(yp/10)][int(xp/10)])
                         return
                     else:
                         xp += 10
@@ -129,14 +135,18 @@ def fillSquare(event):
         yp = int(event.pos[1]/10)*10 + 1#1 is the y position
         orgXP = int(event.pos[0]/10)*10
         
-        # substract the amount from players cash
+        # substract the amount from players cash if available, else do nothing
         if(getCashInt()>=attr1.getCost()):
+            blockText = str(orgXP) + ";" + str(yp) + ";" + str((attr1.getWidth()+1)*10) + ";" + str((attr1.getHeight()+1)*10) + ";" + str(attr1.getCost()) + ";" + str(len(Attractions)-1)
+            Blocks.append(blockText)
+            print(Blocks)
             screen.blit(pygame.transform.scale(attr1.getImage(),((attr1.getWidth()+1)*10,(attr1.getHeight()+1)*10)),(orgXP,yp))
             while h <= attr1.getHeight():
                 xp = int(event.pos[0]/10)*10 + 1#0 is the x position
                 rectange = (xp,yp,10,10)
                 w=0
                 while w <= attr1.getWidth():
+                    print(int(yp/10),int(xp/10),Grid[int(yp/10)][int(xp/10)])
                     try:
                         #pygame.draw.rect(screen, attr1.getColor(), (xp, yp, 9, 9))
                         Grid[int(yp/10)][int(xp/10)] = 1
@@ -194,6 +204,45 @@ def fillSquare(event):
             currAtrrCost = 13000
 
     pygame.display.flip()
+
+def removeAttraction(event):
+    global Blocks
+    blockSplitString = []
+    
+    yp = event.pos[1]#1 is the y position
+    xp = event.pos[0]
+    for idx, blockstring in enumerate(Blocks):
+        blockSplitString.append(blockstring.split(";"))
+        for idx, blocksplit in enumerate(blockSplitString):
+            if((xp<(int(blocksplit[0])+int(blocksplit[2])) and xp>int(blocksplit[0])) and (yp<int(blocksplit[1])+int(blocksplit[3])) and yp > int(blocksplit[1])):
+                pygame.draw.rect(screen,(255,255,255),((int(blocksplit[0])),int(blocksplit[1]),(int(blocksplit[0])+int(blocksplit[2])),int(blocksplit[1])+int(blocksplit[3])))
+                redrawGrid()
+                
+                h=0
+                yp = int(int(blocksplit[1])/10)*10#1 is the y position
+                xp = int(int(blocksplit[0])/10)*10
+                while h <= int(int(blocksplit[3])/10):
+                    xp = int(int(blocksplit[0])/10)*10
+                    w=0
+                    while w <= int(int(blocksplit[2])/10):
+                        Grid[int(yp/10)][int(xp/10)] = 0
+                        print(int(yp/10),int(xp/10),Grid[int(yp/10)][int(xp/10)])
+                        w+=1
+                        xp += 10
+                    h+=1
+                    yp = yp+ 10
+   
+
+def redrawGrid():
+    global gameXRes,yres
+    
+    for x in range(70,gameXRes+10,10):
+        pygame.draw.line(screen,(255,0,0),(x,0),(x,yres),1)
+        x = x + 10
+        
+    for y in range(0,490,10):
+        pygame.draw.line(screen,(255,0,0),(70,y), (gameXRes,y),1)
+        y = y + 10
     
 #The main loop
 def main():
@@ -245,9 +294,11 @@ def main():
                      print("middle button clicked")
                  elif e.button == 3:
                      print("right button clicked")
+                     removeAttraction(e)
+                     removeAttraction(e)
                  elif e.button == 4:
                      print("scrolling forward")
-                     addCash(1000)
+                     addCash(9999999999999999999999999999999)
                  elif e.button == 5:
                      print("scrolling backward")
                      lowerCash(1000)
