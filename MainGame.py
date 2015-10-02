@@ -1,5 +1,12 @@
 #!/usr/bin/python3.2.4
 
+#TODO: Add money to user for destroying building
+#TODO: Make a grassy tilefor the backdrop
+#TODO: Make the menu switchable with buttons (attractions/scenary/shows/...)
+#TODO: Refine the money making process
+#TODO: Build in objectives
+
+
 import pygame,os,sys
 from pygame import *
 from clAttraction import Attraction
@@ -137,7 +144,7 @@ def fillSquare(event):
         
         # substract the amount from players cash if available, else do nothing
         if(getCashInt()>=attr1.getCost()):
-            blockText = str(orgXP) + ";" + str(yp) + ";" + str((attr1.getWidth()+1)*10) + ";" + str((attr1.getHeight()+1)*10) + ";" + str(attr1.getCost()) + ";" + str(len(Attractions)-1)
+            blockText = str(orgXP) + ";" + str(yp) + ";" + str((attr1.getWidth()+1)*10) + ";" + str((attr1.getHeight()+1)*10) + ";" + str(attr1.getCost()) + ";" + str(len(Attractions)-1) + ";n"
             Blocks.append(blockText)
             print(Blocks)
             screen.blit(pygame.transform.scale(attr1.getImage(),((attr1.getWidth()+1)*10,(attr1.getHeight()+1)*10)),(orgXP,yp))
@@ -207,32 +214,36 @@ def fillSquare(event):
 
 def removeAttraction(event):
     global Blocks
+    #print("Blocks", Blocks)
     blockSplitString = []
     
     yp = event.pos[1]#1 is the y position
     xp = event.pos[0]
-    for idx, blockstring in enumerate(Blocks):
+    for idxBlocks, blockstring in enumerate(Blocks):
         blockSplitString.append(blockstring.split(";"))
-        for idx, blocksplit in enumerate(blockSplitString):
-            if((xp<(int(blocksplit[0])+int(blocksplit[2])) and xp>int(blocksplit[0])) and (yp<int(blocksplit[1])+int(blocksplit[3])) and yp > int(blocksplit[1])):
-                pygame.draw.rect(screen,(255,255,255),((int(blocksplit[0])),int(blocksplit[1]),int(blocksplit[2]),int(blocksplit[3])))
-                print(((int(blocksplit[0])),int(blocksplit[1]),(int(blocksplit[0])+int(blocksplit[2])),int(blocksplit[1])+int(blocksplit[3])))
-                #redrawGrid()
-                
-                h=0
-                yp = int(int(blocksplit[1])/10)*10#1 is the y position
-                xp = int(int(blocksplit[0])/10)*10
-                while h <= int(int(blocksplit[3])/10):
+        for idxBS, blocksplit in enumerate(blockSplitString):
+            if(blocksplit[6]=="n"):
+                if((xp<(int(blocksplit[0])+int(blocksplit[2])) and xp>int(blocksplit[0])) and (yp<int(blocksplit[1])+int(blocksplit[3])) and yp > int(blocksplit[1])):
+                    pygame.draw.rect(screen,(255,255,255),((int(blocksplit[0])),int(blocksplit[1]),int(blocksplit[2]),int(blocksplit[3])))
+                    print(((int(blocksplit[0])),int(blocksplit[1]),(int(blocksplit[0])+int(blocksplit[2])),int(blocksplit[1])+int(blocksplit[3])))
+                    #redrawGrid()
+                    
+                    h=0
+                    yp = int(int(blocksplit[1])/10)*10#1 is the y position
                     xp = int(int(blocksplit[0])/10)*10
-                    w=0
-                    while w <= int(int(blocksplit[2])/10):
-                        Grid[int(yp/10)][int(xp/10)] = 0
-                        #print(int(yp/10),int(xp/10),Grid[int(yp/10)][int(xp/10)])
-                        w+=1
-                        xp += 10
-                    h+=1
-                    yp = yp+ 10
-   
+                    while h <= int(int(blocksplit[3])/10):
+                        xp = int(int(blocksplit[0])/10)*10
+                        w=0
+                        while w <= int(int(blocksplit[2])/10):
+                            Grid[int(yp/10)][int(xp/10)] = 0
+                            #print(int(yp/10),int(xp/10),Grid[int(yp/10)][int(xp/10)])
+                            w+=1
+                            xp += 10
+                        h+=1
+                        yp = yp+ 10
+                    #print(0.7*int(blocksplit[4]))
+                    addCash(0.7*int(blocksplit[4]))
+                    Blocks[idxBlocks] = blocksplit[0] + ";" + blocksplit[1] + ";" + blocksplit[2] + ";" + blocksplit[3] + ";" + blocksplit[4] + ";" + blocksplit[5] + ";" + "y"
 
 def redrawGrid():
     global gameXRes,yres
@@ -295,7 +306,6 @@ def main():
                      print("middle button clicked")
                  elif e.button == 3:
                      print("right button clicked")
-                     removeAttraction(e)
                      removeAttraction(e)
                  elif e.button == 4:
                      print("scrolling forward")
