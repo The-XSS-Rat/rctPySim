@@ -1,6 +1,6 @@
 #!/usr/bin/python3.2.4
 
-#TODO: Add money to user for destroying building
+#TODO: REFINE: Add money to user for destroying building(already implemented but i want to give less money when the building is older.
 #TODO: Make a grassy tilefor the backdrop
 #TODO: Make the menu switchable with buttons (attractions/scenary/shows/...)
 #TODO: Refine the money making process

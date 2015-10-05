@@ -1,9 +1,12 @@
 import pygame
 
-spaceSimImg = pygame.image.load("data/space-sim.PNG")
-merryGoRoundImg = pygame.image.load("data/merry-go-round.PNG")
-waterSlideImg = pygame.image.load("data/water_slide.png")
-hauntedMansionImg = pygame.image.load("data/haunted-mansion.PNG")
+try:
+    spaceSimImg = pygame.image.load("data/space-sim.PNG")
+    merryGoRoundImg = pygame.image.load("data/merry-go-round.PNG")
+    waterSlideImg = pygame.image.load("data/water_slide.png")
+    hauntedMansionImg = pygame.image.load("data/haunted-mansion.PNG")
+except:
+    print("error loading images")
 
 
 def getImage(name):
