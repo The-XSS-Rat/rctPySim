@@ -1,11 +1,12 @@
 #!/usr/bin/python3.2.4
 #DONE: Make a grassy tilefor the backdrop
+#DONE: Make the menu switchable with buttons (attractions/scenary/shows/...)
 
 #TODO: Right click needs to blit grass tiles instead of white BG
 #TODO: REFINE: Add money to user for destroying building(already implemented but i want to give less money when the building is older.
-#TODO: Make the menu switchable with buttons (attractions/scenary/shows/...)
 #TODO: Refine the money making process
-#TODO: Build in objectives
+#TODO: Build in objectives(possibly random, possible not random)
+#TODO: build in menu options
 
 
 import pygame,os,sys
@@ -136,18 +137,20 @@ def fillMenu():
         screen.blit(pygame.transform.scale(getImage("downImg"),(20,20)),(0,460))
 
     elif(currMenu=="Attractions2"):
-        # Maze
+        # Dolphin Show
         #pygame.draw.rect(screen,(204,0,102),(0,0,20,20))
-        screen.blit(pygame.transform.scale(getImage("mazeImg"),(20,20)),(0,0))
-        labelTextAttrRC = myfont.render("Merry-go-", 1, (0,0,0))
-        labelTextAttrRC2 = myfont.render("Round", 1, (0,0,0))
-        labelPriceAttrRC = myfont.render("€ 1.500", 1, (0,0,0))
+        screen.blit(pygame.transform.scale(getImage("dolphinShowImg"),(20,20)),(0,0))
+        labelTextAttrRC = myfont.render("Dolphin-", 1, (0,0,0))
+        labelTextAttrRC2 = myfont.render("Show", 1, (0,0,0))
+        labelPriceAttrRC = myfont.render("€ 14.500", 1, (0,0,0))
         screen.blit(labelTextAttrRC, (0, 20))
         screen.blit(labelTextAttrRC2, (0, 30))
         screen.blit(labelPriceAttrRC, (0, 40))
-        screen.blit(pygame.transform.scale(getImage("downImg"),(20,20)),(0,460))
+        
+        #UP & DOWN arrows
+        #screen.blit(pygame.transform.scale(getImage("downImg"),(20,20)),(0,460))
         screen.blit(pygame.transform.scale(getImage("upImg"),(20,20)),(20,460))
-    elif(currMenu=="Shows"):
+    elif(currMenu=="Shows"):#FILlER CODE
         # Dolphin show
         #pygame.draw.rect(screen,(204,0,102),(0,0,20,20))
         screen.blit(pygame.transform.scale(getImage("merryGoRoundImg"),(20,20)),(0,0))
@@ -245,8 +248,8 @@ def fillSquare(event):
                 currAtrrCost = 1500
             if orgXP>=0 and orgXP<=20 and yp>=70 and yp<=90:
                 currAttr = "Space Sim"
-                currAttrWidth = 4
-                currAttrHeight = 4
+                currAttrWidth = 3
+                currAttrHeight = 3
                 currAttrColor = (255,255,0)
                 addedPeople = 20
                 image = getImage("spaceSimImg")
@@ -255,16 +258,16 @@ def fillSquare(event):
             if orgXP>=0 and orgXP<=20 and yp>=140 and yp<=160:
                 currAttr = "Haunted mansion"
                 image = getImage("hauntedMansionImg")
-                currAttrWidth = 4
-                currAttrHeight = 4
+                currAttrWidth = 6
+                currAttrHeight = 6
                 currAttrColor = (106,207,72)
                 addedPeople = 30
                 maxPeopleAdded = 50
                 currAtrrCost = 4500
             if orgXP>=0 and orgXP<=20 and yp>=210 and yp<=230:
                 currAttr = "Water Slide"
-                currAttrWidth = 4
-                currAttrHeight = 4
+                currAttrWidth = 8
+                currAttrHeight = 8
                 currAttrColor = (61,7,12)
                 image = getImage("waterSlideImg")
                 addedPeople = 100
@@ -272,8 +275,8 @@ def fillSquare(event):
                 currAtrrCost = 13000
             if orgXP>=0 and orgXP<=20 and yp>=280 and yp<=300:
                 currAttr = "Maze"
-                currAttrWidth = 4
-                currAttrHeight = 4
+                currAttrWidth = 5
+                currAttrHeight = 5
                 currAttrColor = (61,7,12)
                 image = getImage("mazeImg")
                 addedPeople = 40
@@ -282,7 +285,7 @@ def fillSquare(event):
             if orgXP>=0 and orgXP<=20 and yp>=350 and yp<=370:
                 currAttr = "Observatory"
                 currAttrWidth = 4
-                currAttrHeight = 4
+                currAttrHeight = 6
                 currAttrColor = (61,7,12)
                 image = getImage("observatoryImg")
                 addedPeople = 10
@@ -296,6 +299,15 @@ def fillSquare(event):
             if orgXP>=20 and orgXP<=40 and yp>=460 and yp<=480:
                 currMenu = "Attractions1"
                 fillMenu()
+            if orgXP>=0 and orgXP<=20 and yp>=0 and yp<=20:
+                currAttr = "Dolphin Show"
+                currAttrWidth = 15
+                currAttrHeight = 6
+                currAttrColor = (61,7,12)
+                image = getImage("dolphinShowImg")
+                addedPeople = 150
+                maxPeopleAdded = 400
+                currAtrrCost = 14500
 
     pygame.display.flip()
 
@@ -337,7 +349,9 @@ def removeAttraction(event):
                         xp = int(int(blocksplit[0])/10)*10
                         w=0
                         while w <= int(int(blocksplit[2])/10):
-                            Grid[int(yp/10)][int(xp/10)] = 0
+                            print("ypxp",yp/10,xp/10)
+                            if(int(xp/10)<=63):
+                                Grid[int(yp/10)][int(xp/10)] = 0
                             #print(int(yp/10),int(xp/10),Grid[int(yp/10)][int(xp/10)])
                             w+=1
                             xp += 10
