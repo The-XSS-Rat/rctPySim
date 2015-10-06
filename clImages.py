@@ -11,6 +11,7 @@ try:
     downImg = pygame.image.load("data/down.png")
     observatoryImg = pygame.image.load("data/observatory.png")
     dolphinShowImg = pygame.image.load("data/dolphin-show.png")
+    randomHatImg = pygame.image.load("data/random.png")
 except:
     print("error loading images")
 
@@ -37,3 +38,5 @@ def getImage(name):
         return observatoryImg
     elif(name=="dolphinShowImg"):
         return dolphinShowImg
+    elif(name=="randomHatImg"):
+        return randomHatImg

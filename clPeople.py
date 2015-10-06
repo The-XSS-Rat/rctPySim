@@ -35,5 +35,12 @@ def AddToVisitors(Amount):
     global visitorAmount
     visitorAmount += Amount
 
+def removeVisitors(Amount):
+    global visitorAmount
+    if(visitorAmount-Amount<0):
+        visitorAmount = 0
+    else:
+        visitorAmount -= Amount
+
 
     

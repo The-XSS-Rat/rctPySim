@@ -1,11 +1,12 @@
 #!/usr/bin/python3.2.4
 #DONE: Make a grassy tilefor the backdrop
 #DONE: Make the menu switchable with buttons (attractions/scenary/shows/...)
+#DONE: Build in objectives
 
 #TODO: Right click needs to blit grass tiles instead of white BG
 #TODO: REFINE: Add money to user for destroying building(already implemented but i want to give less money when the building is older.
 #TODO: Refine the money making process
-#TODO: Build in objectives(possibly random, possible not random)
+#TODO: Make the random objective button function(possibly random, possible not random)
 #TODO: build in menu options
 
 
@@ -21,6 +22,13 @@ xres = 840
 gameXRes = 640
 yres = 480
 gameYRes = 480
+sysMenuStart = 630
+attrMenuEnd = 70
+
+clockticks=0
+targetClockTick = 10000
+moneyTarget = 100000
+goalType = "moneyTicks"
 
 Attractions = []
 Grid = []
@@ -68,9 +76,14 @@ def fillMenu():
     
     pygame.draw.rect(screen,(255,255,255),(0,0,70,480))
     
-    myfont = pygame.font.SysFont("monospace", 10)
+    myfont = pygame.font.SysFont("monospace", 11)
     
-
+    #righthandSide menu
+    screen.blit(pygame.transform.scale(getImage("randomHatImg"),(20,20)),(sysMenuStart+10,430))
+    labelText = myfont.render("Generate a", 1, (0,0,0))
+    labelText2 = myfont.render("Random challenge", 1, (0,0,0))
+    screen.blit(labelText, (sysMenuStart+10, 450))
+    screen.blit(labelText2, (sysMenuStart+10, 460))
 
     if(currMenu=="Attractions1"):
         # Merry-go-round
@@ -174,7 +187,7 @@ def fillSquare(event):
     global currAtrrCost
     global image
     global Blocks
-    global currMenu
+    global currMenu,sysMenuStart
     
     Attractions.append(Attraction(currAttrWidth,currAttrHeight,currAttrColor,currAtrrCost,image))
     attr1 = Attractions[len(Attractions)-1]
@@ -182,7 +195,7 @@ def fillSquare(event):
     h=0
     yp = int(event.pos[1]/10)*10 + 1#1 is the y position
     orgXP = int(event.pos[0]/10)*10
-    if orgXP >= 70:
+    if orgXP >= attrMenuEnd and orgXP <= sysMenuStart:
         while h <= attr1.getHeight():
             xp = int(event.pos[0]/10)*10 + 1#0 is the x position
             rectange = (xp,yp,10,10)
@@ -207,7 +220,7 @@ def fillSquare(event):
         
         # substract the amount from players cash if available, else do nothing
         if(getCashInt()>=attr1.getCost()):
-            blockText = str(orgXP) + ";" + str(yp) + ";" + str((attr1.getWidth()+1)*10) + ";" + str((attr1.getHeight()+1)*10) + ";" + str(attr1.getCost()) + ";" + str(len(Attractions)-1) + ";n"
+            blockText = str(orgXP) + ";" + str(yp) + ";" + str((attr1.getWidth()+1)*10) + ";" + str((attr1.getHeight()+1)*10) + ";" + str(attr1.getCost()) + ";" + str(len(Attractions)-1) + ";n;" + str(addedPeople)
             Blocks.append(blockText)
             print(Blocks)
             screen.blit(pygame.transform.scale(attr1.getImage(),((attr1.getWidth()+1)*10,(attr1.getHeight()+1)*10)),(orgXP,yp))
@@ -232,7 +245,8 @@ def fillSquare(event):
             AddToVisitors(addedPeople)
         else:
             print("Niet genoeg geld/Not enough cash")
-        
+    elif orgXP>=sysMenuStart:
+        print("sysMenu clicked")
     else:
         print("menu tapped")
         #attraction list
@@ -359,21 +373,27 @@ def removeAttraction(event):
                         yp = yp+ 10
                     #print(0.7*int(blocksplit[4]))
                     addCash(0.7*int(blocksplit[4]))
-                    Blocks[idxBlocks] = blocksplit[0] + ";" + blocksplit[1] + ";" + blocksplit[2] + ";" + blocksplit[3] + ";" + blocksplit[4] + ";" + blocksplit[5] + ";" + "y"
+                    removeVisitors(int(blocksplit[7])*1.5)
+                    Blocks[idxBlocks] = blocksplit[0] + ";" + blocksplit[1] + ";" + blocksplit[2] + ";" + blocksplit[3] + ";" + blocksplit[4] + ";" + blocksplit[5] + ";" + "y" + ";" + blocksplit[7]
 
-def redrawGrid():
-    global gameXRes,yres
+#def generateRandomChallenge():
+    #get money by clocktick
     
-    for x in range(70,gameXRes+10,10):
-        pygame.draw.line(screen,(255,0,0),(x,0),(x,yres),1)
-        x = x + 10
-        
-    for y in range(0,490,10):
-        pygame.draw.line(screen,(255,0,0),(70,y), (gameXRes,y),1)
-        y = y + 10
+def checkGoal():
+    global clockticks,moneyTarget
+    
+    myfont = pygame.font.SysFont("monospace", 15)
+
+    if(goalType=="moneyTicks"):
+        if(getCashInt() >= moneyTarget and clockticks <= targetClockTick):
+            labelTextWon = myfont.render("Congratulations!", 1, (0,255,0))            
+            screen.blit(labelTextWon, (640, 400))
+            
     
 #The main loop
 def main():
+    global clockticks
+    
     pygame.font.init()
     x = 10
     y = 10
@@ -390,22 +410,41 @@ def main():
     
     while 1:
         time.sleep(0.1)
+        clockticks += 1 
+        checkGoal()
         generateCash()
         # initialize font; must be called after 'pygame.init()' to avoid 'Font not Initialized' error
         myfont = pygame.font.SysFont("monospace", 15)
 
         # Erase previous labels
-        pygame.draw.rect(screen,(255,255,255),(641,0,740,100))
+        pygame.draw.rect(screen,(255,255,255),(641,0,740,300))
 
         # render text
         labelTextVisitors = myfont.render("Num. of visitors", 1, (0,0,0))
         labelCounterVisitors = myfont.render(getPeopleStr(), 1, (0,0,0))
         labelTextMoney= myfont.render("Money", 1, (0,0,0))
+        labelTextClock= myfont.render("Clockticks", 1, (0,0,0))
+        labelTextClockTicks= myfont.render(str(clockticks), 1, (0,0,0))
         labelCounterMoney = myfont.render(getCashStr(), 1, (0,0,0))
         screen.blit(labelTextVisitors, (640, 0))
         screen.blit(labelCounterVisitors, (640, 13))
         screen.blit(labelTextMoney, (640, 26))
         screen.blit(labelCounterMoney, (640, 39))
+        screen.blit(labelTextClock, (640, 57))
+        screen.blit(labelTextClockTicks, (640, 70))
+        
+        labelGoal = myfont.render("Generate at least", 1, (255,0,0))
+        labelGoal2 = myfont.render(locale.currency(moneyTarget,grouping=True), 1, (255,0,0))
+        labelGoal3 = myfont.render("By clockTick: ", 1, (255,0,0))
+        labelGoal4 = myfont.render(str(targetClockTick), 1, (255,0,0))
+        screen.blit(labelGoal, (640, 120))
+        screen.blit(labelGoal2, (640, 133))
+        screen.blit(labelGoal3, (640, 146))
+        screen.blit(labelGoal4, (640, 159))
+
+        
+        
+        
 
         pygame.display.flip()
 
