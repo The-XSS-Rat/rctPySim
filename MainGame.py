@@ -204,7 +204,7 @@ def fillSquare(event):
                 try:
                     if Grid[int(yp/10)][int(xp/10)] == 1:
                         print("Er kan hier geen blok van deze grote worden geplaatst. Er staat reeds een blok in de weg./ No blocked can be placed here, already a block underlying")
-                        print(int(yp/10),int(xp/10),Grid[int(yp/10)][int(xp/10)])
+                        #print(int(yp/10),int(xp/10),Grid[int(yp/10)][int(xp/10)])
                         return
                     else:
                         xp += 10
@@ -222,7 +222,7 @@ def fillSquare(event):
         if(getCashInt()>=attr1.getCost()):
             blockText = str(orgXP) + ";" + str(yp) + ";" + str((attr1.getWidth()+1)*10) + ";" + str((attr1.getHeight()+1)*10) + ";" + str(attr1.getCost()) + ";" + str(len(Attractions)-1) + ";n;" + str(addedPeople)
             Blocks.append(blockText)
-            print(Blocks)
+            #print(Blocks)
             screen.blit(pygame.transform.scale(attr1.getImage(),((attr1.getWidth()+1)*10,(attr1.getHeight()+1)*10)),(orgXP,yp))
             while h <= attr1.getHeight():
                 xp = int(event.pos[0]/10)*10 + 1#0 is the x position
@@ -247,6 +247,9 @@ def fillSquare(event):
             print("Niet genoeg geld/Not enough cash")
     elif orgXP>=sysMenuStart:
         print("sysMenu clicked")
+        if orgXP >= sysMenuStart+10 and orgXP <= sysMenuStart+10+20 and yp >= 430 and yp <=430+20:
+            generateRandomChallenge()
+            
     else:
         print("menu tapped")
         #attraction list
@@ -351,7 +354,7 @@ def removeAttraction(event):
                     for x in range(xp,xp+int(blocksplit[2]),10):
                         for y in range(yp,yp+int(blocksplit[3]),10):
                             screen.blit(pygame.transform.scale(getImage("grassTileImg"),(10,10)),(x,y))
-                            print("xy",x,y)
+                            #print("xy",x,y)
                             y+=10
                         x+=10
                             
@@ -363,7 +366,7 @@ def removeAttraction(event):
                         xp = int(int(blocksplit[0])/10)*10
                         w=0
                         while w <= int(int(blocksplit[2])/10):
-                            print("ypxp",yp/10,xp/10)
+                            #print("ypxp",yp/10,xp/10)
                             if(int(xp/10)<=63):
                                 Grid[int(yp/10)][int(xp/10)] = 0
                             #print(int(yp/10),int(xp/10),Grid[int(yp/10)][int(xp/10)])
@@ -376,8 +379,18 @@ def removeAttraction(event):
                     removeVisitors(int(blocksplit[7])*1.5)
                     Blocks[idxBlocks] = blocksplit[0] + ";" + blocksplit[1] + ";" + blocksplit[2] + ";" + blocksplit[3] + ";" + blocksplit[4] + ";" + blocksplit[5] + ";" + "y" + ";" + blocksplit[7]
 
-#def generateRandomChallenge():
+def generateRandomChallenge():
+    global targetClockTick,moneyTarget
     #get money by clocktick
+    targetClockTicks = [1000,10000,100000]
+    moneyTargets = [50000,100000,10000000]
+    
+    index = randint(0,len(moneyTargets)-1)
+    
+    targetClockTick = clockticks + targetClockTicks[index]
+    moneyTarget = getCashInt() + moneyTargets[index]
+    
+    
     
 def checkGoal():
     global clockticks,moneyTarget
