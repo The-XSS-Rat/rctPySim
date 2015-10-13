@@ -15,7 +15,7 @@ def generatePeople():
     
     if(randint(0,1000) < 100):
         if chancePlusMinus >= (100 - chanceOfPlus) and (visitorAmount<maxAmount):
-            visitorAmount += randint(0,3)
+            visitorAmount += randint(0,10)
         else:
             visitorAmount -= randint(0,3)
         if visitorAmount < 0 : visitorAmount = 0
@@ -42,5 +42,7 @@ def removeVisitors(Amount):
     else:
         visitorAmount -= Amount
 
+def getVisitorAmount():
+    return visitorAmount
 
     

@@ -2,12 +2,13 @@
 #DONE: Make a grassy tilefor the backdrop
 #DONE: Make the menu switchable with buttons (attractions/scenary/shows/...)
 #DONE: Build in objectives
+#DONE: Right click needs to blit grass tiles instead of white BG
 
-#TODO: Right click needs to blit grass tiles instead of white BG
 #TODO: REFINE: Add money to user for destroying building(already implemented but i want to give less money when the building is older.
 #TODO: Refine the money making process
 #TODO: Make the random objective button function(possibly random, possible not random)
 #TODO: build in menu options
+#TODO: Make game scaleable
 
 
 import pygame,os,sys
@@ -29,6 +30,7 @@ clockticks=0
 targetClockTick = 10000
 moneyTarget = 100000
 goalType = "moneyTicks"
+visitorTarget = 0
 
 Attractions = []
 Grid = []
@@ -380,20 +382,35 @@ def removeAttraction(event):
                     Blocks[idxBlocks] = blocksplit[0] + ";" + blocksplit[1] + ";" + blocksplit[2] + ";" + blocksplit[3] + ";" + blocksplit[4] + ";" + blocksplit[5] + ";" + "y" + ";" + blocksplit[7]
 
 def generateRandomChallenge():
-    global targetClockTick,moneyTarget
+    global targetClockTick,moneyTarget,goalType,visitorTarget
     #get money by clocktick
-    targetClockTicks = [1000,10000,100000]
-    moneyTargets = [50000,100000,10000000]
-    
-    index = randint(0,len(moneyTargets)-1)
-    
-    targetClockTick = clockticks + targetClockTicks[index]
-    moneyTarget = getCashInt() + moneyTargets[index]
+    chanceObjective = randint(0,1)
+    if(chanceObjective==0):
+        goalType="moneyTicks"
+        targetClockTicks = [1000,10000,100000]
+        moneyTargets = [50000,100000,10000000]
+        
+        index = randint(0,len(targetClockTicks)-1)
+        
+        targetClockTick = clockticks + targetClockTicks[index]
+        moneyTarget = getCashInt() + moneyTargets[index]
+    else:
+        goalType="visitorTicks"
+        targetClockTicks = [1000,10000,100000]
+        VisitorTargets = [100,1000,95000]
+        index = randint(0,len(targetClockTicks)-1)
+        
+        targetClockTick = clockticks + targetClockTicks[index]
+        visitorTarget = getVisitorAmount() + VisitorTargets[index]
+        print(visitorTarget)
+
+        
+
     
     
     
 def checkGoal():
-    global clockticks,moneyTarget
+    global clockticks,moneyTarget,visitorTarget
     
     myfont = pygame.font.SysFont("monospace", 15)
 
@@ -401,11 +418,15 @@ def checkGoal():
         if(getCashInt() >= moneyTarget and clockticks <= targetClockTick):
             labelTextWon = myfont.render("Congratulations!", 1, (0,255,0))            
             screen.blit(labelTextWon, (640, 400))
+    if(goalType=="visitorTicks"):
+        if(getVisitorAmount() >= visitorTarget and clockticks <= targetClockTick):
+            labelTextWon = myfont.render("Congratulations!", 1, (0,255,0))            
+            screen.blit(labelTextWon, (640, 400))
             
     
 #The main loop
 def main():
-    global clockticks
+    global clockticks,visitorTarget
     
     pygame.font.init()
     x = 10
@@ -445,11 +466,17 @@ def main():
         screen.blit(labelCounterMoney, (640, 39))
         screen.blit(labelTextClock, (640, 57))
         screen.blit(labelTextClockTicks, (640, 70))
-        
-        labelGoal = myfont.render("Generate at least", 1, (255,0,0))
-        labelGoal2 = myfont.render(locale.currency(moneyTarget,grouping=True), 1, (255,0,0))
-        labelGoal3 = myfont.render("By clockTick: ", 1, (255,0,0))
-        labelGoal4 = myfont.render(str(targetClockTick), 1, (255,0,0))
+        if(goalType=="visitorTicks"):
+            labelGoal = myfont.render("Generate at least", 1, (255,0,0))
+            labelGoal2 = myfont.render(str(visitorTarget) + " Visitors", 1, (255,0,0))
+            labelGoal3 = myfont.render("By clockTick: ", 1, (255,0,0))
+            labelGoal4 = myfont.render(str(targetClockTick), 1, (255,0,0))
+
+        else:
+            labelGoal = myfont.render("Generate at least", 1, (255,0,0))
+            labelGoal2 = myfont.render(locale.currency(moneyTarget,grouping=True), 1, (255,0,0))
+            labelGoal3 = myfont.render("By clockTick: ", 1, (255,0,0))
+            labelGoal4 = myfont.render(str(targetClockTick), 1, (255,0,0))
         screen.blit(labelGoal, (640, 120))
         screen.blit(labelGoal2, (640, 133))
         screen.blit(labelGoal3, (640, 146))
@@ -477,7 +504,7 @@ def main():
                      removeAttraction(e)
                  elif e.button == 4:
                      print("scrolling forward")
-                     addCash(9999999999999999999999999999999)
+                     addCash(1000)
                  elif e.button == 5:
                      print("scrolling backward")
                      lowerCash(1000)
