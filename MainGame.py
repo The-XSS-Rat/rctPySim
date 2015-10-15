@@ -8,7 +8,7 @@
 #TODO: Refine the money making process
 #TODO: Make the random objective button function(possibly random, possible not random)
 #TODO: build in menu options
-#TODO: Make game scaleable
+#TODO: Make game scaleable(ui)
 
 
 import pygame,os,sys
@@ -413,15 +413,18 @@ def checkGoal():
     global clockticks,moneyTarget,visitorTarget
     
     myfont = pygame.font.SysFont("monospace", 15)
-
-    if(goalType=="moneyTicks"):
-        if(getCashInt() >= moneyTarget and clockticks <= targetClockTick):
-            labelTextWon = myfont.render("Congratulations!", 1, (0,255,0))            
-            screen.blit(labelTextWon, (640, 400))
-    if(goalType=="visitorTicks"):
-        if(getVisitorAmount() >= visitorTarget and clockticks <= targetClockTick):
-            labelTextWon = myfont.render("Congratulations!", 1, (0,255,0))            
-            screen.blit(labelTextWon, (640, 400))
+    if(clockticks>targetClockTick):
+        labelTextWon = myfont.render("Failed!!!", 1, (255,0,0))            
+        screen.blit(labelTextWon, (640, 400))
+    else:
+        if(goalType=="moneyTicks"):
+            if(getCashInt() >= moneyTarget and clockticks <= targetClockTick):
+                labelTextWon = myfont.render("Congratulations!", 1, (0,255,0))            
+                screen.blit(labelTextWon, (640, 400))
+        if(goalType=="visitorTicks"):
+            if(getVisitorAmount() >= visitorTarget and clockticks <= targetClockTick):
+                labelTextWon = myfont.render("Congratulations!", 1, (0,255,0))            
+                screen.blit(labelTextWon, (640, 400))
             
     
 #The main loop
