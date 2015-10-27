@@ -3,12 +3,17 @@
 #DONE: Make the menu switchable with buttons (attractions/scenary/shows/...)
 #DONE: Build in objectives
 #DONE: Right click needs to blit grass tiles instead of white BG
+#DONE: Make a main menu
+
 
 #TODO: REFINE: Add money to user for destroying building(already implemented but i want to give less money when the building is older.
 #TODO: Refine the money making process
 #TODO: Make the random objective button function(possibly random, possible not random)
 #TODO: build in menu options
 #TODO: Make game scaleable(ui)
+#TODO: Adept difficulty
+#TODO: Expand a main menu
+
 
 
 import pygame,os,sys
@@ -25,6 +30,7 @@ yres = 480
 gameYRes = 480
 sysMenuStart = 630
 attrMenuEnd = 70
+Screenmode = "MM" # Main menu
 
 clockticks=0
 targetClockTick = 10000
@@ -46,6 +52,7 @@ maxPeopleAdded = 3
 currAtrrCost = 4500
 
 image = getImage("merryGoRoundImg")
+
 
 screen = pygame.display.set_mode((xres, yres))
 screen.fill((255,255,255))
@@ -71,6 +78,25 @@ def makeGrid():
     # Do not know why this is in here: Grid[30][15] = 1
     fillMenu()
     pygame.display.flip()
+
+def makeMenu():
+    menuFont = pygame.font.SysFont("monospace", 15)
+
+    infolabel1 = menuFont.render("Choose a dificulty to start:",1,(0,0,0))
+    screen.blit(infolabel1,(10,10))
+
+    pygame.draw.rect(screen,(0,0,0),(10,25,40,15))
+    pygame.draw.rect(screen,(0,0,0),(10,41,40,15))
+    pygame.draw.rect(screen,(0,0,0),(10,57,40,15))
+    startGameLabelE = menuFont.render("EASY",1,(255,255,255))
+    startGameLabelM = menuFont.render("MEDI",1,(255,255,255))
+    startGameLabelH = menuFont.render("HARD",1,(255,255,255))
+    screen.blit(startGameLabelE,(12,25))
+    screen.blit(startGameLabelM,(12,41))
+    screen.blit(startGameLabelH,(12,57))
+    
+    pygame.display.flip()
+
         
 
 def fillMenu():  
@@ -177,7 +203,23 @@ def fillMenu():
         screen.blit(labelPriceAttrRC, (0, 40))
         screen.blit(pygame.transform.scale(getImage("upImg"),(20,20)),(20,460))
     
-
+def mainMenuClick(event):
+    global Screenmode
+    
+    yp = event.pos[1]
+    xp = event.pos[0]
+    
+    if(yp>=25 and yp<= 40 and xp >=10 and xp <= 40):
+        Screenmode = "MG;E"
+        makeGrid()
+    elif(yp>=41 and yp<= 56 and xp >=10 and xp <= 40):
+        Screenmode = "MG;M"
+        makeGrid()
+    elif(yp>=57 and yp<= 82 and xp >=10 and xp <= 40):
+        Screenmode = "MG;H"
+        makeGrid()
+    print(Screenmode)
+    
 def fillSquare(event):
     global currAttrWidth
     global currAttr
@@ -429,7 +471,7 @@ def checkGoal():
     
 #The main loop
 def main():
-    global clockticks,visitorTarget
+    global clockticks,visitorTarget,Screenmode
     
     pygame.font.init()
     x = 10
@@ -442,48 +484,51 @@ def main():
     #pygame.draw.line(screen,(255,0,0),(0,10),(gameXRes,y),1)
     
     done = 0
-    
-    makeGrid()
+    if(Screenmode=="MM"):
+        makeMenu()
+    else:
+        makeGrid()
     
     while 1:
         time.sleep(0.1)
-        clockticks += 1 
-        checkGoal()
-        generateCash()
-        # initialize font; must be called after 'pygame.init()' to avoid 'Font not Initialized' error
-        myfont = pygame.font.SysFont("monospace", 15)
+        if(Screenmode=="MG"):
+            clockticks += 1 
+            checkGoal()
+            generateCash()
+            # initialize font; must be called after 'pygame.init()' to avoid 'Font not Initialized' error
+            myfont = pygame.font.SysFont("monospace", 15)
 
-        # Erase previous labels
-        pygame.draw.rect(screen,(255,255,255),(641,0,740,300))
+            # Erase previous labels
+            pygame.draw.rect(screen,(255,255,255),(641,0,740,300))
 
-        # render text
-        labelTextVisitors = myfont.render("Num. of visitors", 1, (0,0,0))
-        labelCounterVisitors = myfont.render(getPeopleStr(), 1, (0,0,0))
-        labelTextMoney= myfont.render("Money", 1, (0,0,0))
-        labelTextClock= myfont.render("Clockticks", 1, (0,0,0))
-        labelTextClockTicks= myfont.render(str(clockticks), 1, (0,0,0))
-        labelCounterMoney = myfont.render(getCashStr(), 1, (0,0,0))
-        screen.blit(labelTextVisitors, (640, 0))
-        screen.blit(labelCounterVisitors, (640, 13))
-        screen.blit(labelTextMoney, (640, 26))
-        screen.blit(labelCounterMoney, (640, 39))
-        screen.blit(labelTextClock, (640, 57))
-        screen.blit(labelTextClockTicks, (640, 70))
-        if(goalType=="visitorTicks"):
-            labelGoal = myfont.render("Generate at least", 1, (255,0,0))
-            labelGoal2 = myfont.render(str(visitorTarget) + " Visitors", 1, (255,0,0))
-            labelGoal3 = myfont.render("By clockTick: ", 1, (255,0,0))
-            labelGoal4 = myfont.render(str(targetClockTick), 1, (255,0,0))
+            # render text
+            labelTextVisitors = myfont.render("Num. of visitors", 1, (0,0,0))
+            labelCounterVisitors = myfont.render(getPeopleStr(), 1, (0,0,0))
+            labelTextMoney= myfont.render("Money", 1, (0,0,0))
+            labelTextClock= myfont.render("Clockticks", 1, (0,0,0))
+            labelTextClockTicks= myfont.render(str(clockticks), 1, (0,0,0))
+            labelCounterMoney = myfont.render(getCashStr(), 1, (0,0,0))
+            screen.blit(labelTextVisitors, (640, 0))
+            screen.blit(labelCounterVisitors, (640, 13))
+            screen.blit(labelTextMoney, (640, 26))
+            screen.blit(labelCounterMoney, (640, 39))
+            screen.blit(labelTextClock, (640, 57))
+            screen.blit(labelTextClockTicks, (640, 70))
+            if(goalType=="visitorTicks"):
+                labelGoal = myfont.render("Generate at least", 1, (255,0,0))
+                labelGoal2 = myfont.render(str(visitorTarget) + " Visitors", 1, (255,0,0))
+                labelGoal3 = myfont.render("By clockTick: ", 1, (255,0,0))
+                labelGoal4 = myfont.render(str(targetClockTick), 1, (255,0,0))
 
-        else:
-            labelGoal = myfont.render("Generate at least", 1, (255,0,0))
-            labelGoal2 = myfont.render(locale.currency(moneyTarget,grouping=True), 1, (255,0,0))
-            labelGoal3 = myfont.render("By clockTick: ", 1, (255,0,0))
-            labelGoal4 = myfont.render(str(targetClockTick), 1, (255,0,0))
-        screen.blit(labelGoal, (640, 120))
-        screen.blit(labelGoal2, (640, 133))
-        screen.blit(labelGoal3, (640, 146))
-        screen.blit(labelGoal4, (640, 159))
+            else:
+                labelGoal = myfont.render("Generate at least", 1, (255,0,0))
+                labelGoal2 = myfont.render(locale.currency(moneyTarget,grouping=True), 1, (255,0,0))
+                labelGoal3 = myfont.render("By clockTick: ", 1, (255,0,0))
+                labelGoal4 = myfont.render(str(targetClockTick), 1, (255,0,0))
+            screen.blit(labelGoal, (640, 120))
+            screen.blit(labelGoal2, (640, 133))
+            screen.blit(labelGoal3, (640, 146))
+            screen.blit(labelGoal4, (640, 159))
 
         
         
@@ -499,7 +544,10 @@ def main():
                  
                  if e.button == 1:
                      print("left button clicked")
-                     fillSquare(e)
+                     if(Screenmode=="MM"):
+                        mainMenuClick(e) 
+                     else:
+                        fillSquare(e)
                  elif e.button == 2:
                      print("middle button clicked")
                  elif e.button == 3:
