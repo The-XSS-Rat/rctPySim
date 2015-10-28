@@ -22,6 +22,7 @@ from clAttraction import Attraction
 from clPeople import *
 from clImages import *
 from clPlayer import *
+import pygame._view
 import time
 
 xres = 840

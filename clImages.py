@@ -1,19 +1,29 @@
-import pygame
+import pygame,sys,os
 
-try:
-    spaceSimImg = pygame.image.load("data/space-sim.PNG")
-    merryGoRoundImg = pygame.image.load("data/merry-go-round.PNG")
-    waterSlideImg = pygame.image.load("data/water_slide.png")
-    hauntedMansionImg = pygame.image.load("data/haunted-mansion.PNG")
-    grassTileImg = pygame.image.load("data/grasstile.png")
-    mazeImg = pygame.image.load("data/maze.png")
-    upImg = pygame.image.load("data/up.png")
-    downImg = pygame.image.load("data/down.png")
-    observatoryImg = pygame.image.load("data/observatory.png")
-    dolphinShowImg = pygame.image.load("data/dolphin-show.png")
-    randomHatImg = pygame.image.load("data/random.png")
-except:
-    print("error loading images")
+
+def find_data_file(filename):
+    if getattr(sys, 'frozen', False):
+        # The application is frozen
+        datadir = os.path.dirname(sys.executable)
+    else:
+        # The application is not frozen
+        # Change this bit to match where you store your data files:
+        datadir = os.path.dirname(__file__)
+
+    return os.path.join(datadir, filename)
+    
+spaceSimImg = pygame.image.load(find_data_file("data\\space-sim.PNG"))
+merryGoRoundImg = pygame.image.load(find_data_file("data\\merry-go-round.PNG"))
+waterSlideImg = pygame.image.load(find_data_file("data\\water_slide.png"))
+hauntedMansionImg = pygame.image.load(find_data_file("data\\haunted-mansion.PNG"))
+grassTileImg = pygame.image.load(find_data_file("data\\grasstile.png"))
+mazeImg = pygame.image.load(find_data_file("data\\maze.png"))
+upImg = pygame.image.load(find_data_file("data\\up.png"))
+downImg = pygame.image.load(find_data_file("data\\down.png"))
+observatoryImg = pygame.image.load(find_data_file("data\\observatory.png"))
+dolphinShowImg = pygame.image.load(find_data_file("data\\dolphin-show.png"))
+randomHatImg = pygame.image.load(find_data_file("data\\random.png"))
+
 
 
 def getImage(name):
@@ -40,3 +50,5 @@ def getImage(name):
         return dolphinShowImg
     elif(name=="randomHatImg"):
         return randomHatImg
+        
+
