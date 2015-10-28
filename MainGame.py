@@ -491,7 +491,7 @@ def main():
     
     while 1:
         time.sleep(0.1)
-        if(Screenmode=="MG"):
+        if("MG" in Screenmode):
             clockticks += 1 
             checkGoal()
             generateCash()
