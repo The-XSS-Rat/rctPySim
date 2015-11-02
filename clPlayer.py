@@ -6,6 +6,7 @@ from clPeople import getPeopleInt
 locale.setlocale( locale.LC_ALL, '' )
 
 playerCash = 4500
+modifier = 1
 
 def getCashStr():
     return str(locale.currency(playerCash,grouping=True))
@@ -16,6 +17,10 @@ def getCashInt():
 def addCash(Amount):
     global playerCash
     playerCash += Amount
+    
+def setModifier(Amount):
+    global modifier
+    modifier += Amount
 
 def lowerCash(Amount):
     global playerCash
@@ -23,7 +28,8 @@ def lowerCash(Amount):
 
 def generateCash():
     global playerCash
+    global modifier
     if(randint(0,100)<10):
-        playerCash += randint(0,1) * getPeopleInt()
+        playerCash += randint(0,1) * getPeopleInt() * modifier
 
     

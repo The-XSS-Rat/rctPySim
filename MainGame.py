@@ -213,10 +213,16 @@ def mainMenuClick(event):
     
     if(yp>=25 and yp<= 40 and xp >=10 and xp <= 40):
         Screenmode = "MG;E"
+        addCash(10000)
+        AddToVisitors(60)
+        setModifier(5)
         makeGrid()
     elif(yp>=41 and yp<= 56 and xp >=10 and xp <= 40):
         Screenmode = "MG;M"
         makeGrid()
+        addCash(4000)
+        setModifier(2)
+        AddToVisitors(60)
     elif(yp>=57 and yp<= 82 and xp >=10 and xp <= 40):
         Screenmode = "MG;H"
         makeGrid()
