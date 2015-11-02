@@ -13,6 +13,7 @@
 #TODO: Make game scaleable(ui)
 #TODO: Adept difficulty
 #TODO: Expand a main menu
+#TODO: Make moving sprites by using a general function
 
 
 
