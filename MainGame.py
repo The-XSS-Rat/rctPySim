@@ -423,14 +423,32 @@ def fillSquare(event):
                 fillMenu()
         elif(currMenu=="Decoration"):
             if orgXP>=0 and orgXP<=20 and yp>=0 and yp<=20:
-                currAttr = "Dolphin Show"
-                currAttrWidth = 15
-                currAttrHeight = 6
-                currAttrColor = (61,7,12)
-                image = getImage("dolphinShowImg")
-                addedPeople = 150
-                maxPeopleAdded = 400
-                currAtrrCost = 14500
+                currAttr = "Tree1"
+                currAttrWidth = 2
+                currAttrHeight = 3
+                #currAttrColor = (61,7,12)
+                image = getImage("tree1")
+                addedPeople = 2
+                maxPeopleAdded = 10
+                currAtrrCost = 100
+            if orgXP>=0 and orgXP<=20 and yp>=60 and yp<=80:
+                currAttr = "Tree2"
+                currAttrWidth = 2
+                currAttrHeight = 3
+                #currAttrColor = (61,7,12)
+                image = getImage("tree2")
+                addedPeople = 3
+                maxPeopleAdded = 12
+                currAtrrCost = 100
+            if orgXP>=0 and orgXP<=20 and yp>=120 and yp<=140:
+                currAttr = "Tree3"
+                currAttrWidth = 2
+                currAttrHeight = 3
+                #currAttrColor = (61,7,12)
+                image = getImage("tree3")
+                addedPeople = 4
+                maxPeopleAdded = 15
+                currAtrrCost = 100
             if orgXP>=40 and orgXP<=60 and yp>=460 and yp<=480:
                 currMenu = "Attractions1"
                 fillMenu()
