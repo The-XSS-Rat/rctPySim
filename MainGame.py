@@ -4,16 +4,23 @@
 #DONE: Build in objectives
 #DONE: Right click needs to blit grass tiles instead of white BG
 #DONE: Make a main menu
+#DONE: Adept difficulty
+#DONE: Make a decorations module
+#DONE: Make the random objective button function(possibly random, possible not random)
+#DONE: build in menu options
+
 
 
 #TODO: REFINE: Add money to user for destroying building(already implemented but i want to give less money when the building is older.
 #TODO: Refine the money making process
-#TODO: Make the random objective button function(possibly random, possible not random)
-#TODO: build in menu options
+#TODO: Refine the random objective(i.e. number of attractions before time-unit
 #TODO: Make game scaleable(ui)
-#TODO: Adept difficulty
+#TODO: Refine: Adept difficulty
 #TODO: Expand a main menu
+#TODO: Make main menu better looking
 #TODO: Make moving sprites by using a general function
+#TODO: Fill in the decorations menu
+#TODO: Add more attractions
 
 
 
@@ -178,6 +185,9 @@ def fillMenu():
         
         #Down arrow
         screen.blit(pygame.transform.scale(getImage("downImg"),(20,20)),(0,460))
+        
+        #Decorations button
+        screen.blit(pygame.transform.scale(getImage("btnDecoration"),(20,20)),(40,460))
 
     elif(currMenu=="Attractions2"):
         # Dolphin Show
@@ -193,6 +203,32 @@ def fillMenu():
         #UP & DOWN arrows
         #screen.blit(pygame.transform.scale(getImage("downImg"),(20,20)),(0,460))
         screen.blit(pygame.transform.scale(getImage("upImg"),(20,20)),(20,460))
+        screen.blit(pygame.transform.scale(getImage("btnDecoration"),(20,20)),(40,460))
+
+    elif(currMenu=="Decoration"):
+        #Tree1
+        #pygame.draw.rect(screen,(204,0,102),(0,0,20,20))
+        screen.blit(pygame.transform.scale(getImage("tree1"),(20,20)),(0,0))
+        labelTextAttrRC = myfont.render("tree-1", 1, (0,0,0))
+        labelTextAttrRC2 = myfont.render("", 1, (0,0,0))
+        labelPriceAttrRC = myfont.render("€ 100", 1, (0,0,0))
+        screen.blit(labelTextAttrRC, (0, 20))
+        screen.blit(labelPriceAttrRC, (0, 30))
+        #Boom 2
+        screen.blit(pygame.transform.scale(getImage("tree2"),(20,20)),(0,60))
+        labelTextAttrRC = myfont.render("tree-2", 1, (0,0,0))
+        labelPriceAttrRC = myfont.render("€ 200", 1, (0,0,0))
+        screen.blit(labelTextAttrRC, (0, 80))
+        screen.blit(labelPriceAttrRC, (0, 90))
+        #Tree 3
+        screen.blit(pygame.transform.scale(getImage("tree3"),(20,20)),(0,120))
+        labelTextAttrRC = myfont.render("tree-3", 1, (0,0,0))
+        labelPriceAttrRC = myfont.render("€ 350", 1, (0,0,0))
+        screen.blit(labelTextAttrRC, (0, 140))
+        screen.blit(labelPriceAttrRC, (0, 150))
+        #screen.blit(pygame.transform.scale(getImage("downImg"),(20,20)),(0,460))
+        screen.blit(pygame.transform.scale(getImage("btnAttractions"),(20,20)),(40,460))
+        
     elif(currMenu=="Shows"):#FILlER CODE
         # Dolphin show
         #pygame.draw.rect(screen,(204,0,102),(0,0,20,20))
@@ -216,13 +252,15 @@ def mainMenuClick(event):
         addCash(10000)
         AddToVisitors(60)
         setModifier(5)
+        setChanceOfPlus(75)
         makeGrid()
     elif(yp>=41 and yp<= 56 and xp >=10 and xp <= 40):
         Screenmode = "MG;M"
-        makeGrid()
         addCash(4000)
         setModifier(2)
         AddToVisitors(60)
+        setChanceOfPlus(60)
+        makeGrid()
     elif(yp>=57 and yp<= 82 and xp >=10 and xp <= 40):
         Screenmode = "MG;H"
         makeGrid()
@@ -364,6 +402,9 @@ def fillSquare(event):
             if orgXP>=0 and orgXP<=20 and yp>=460 and yp<=480:
                 currMenu = "Attractions2"
                 fillMenu()
+            if orgXP>=40 and orgXP<=60 and yp>=460 and yp<=480:
+                currMenu = "Decoration"
+                fillMenu()
         elif(currMenu=="Attractions2"):
             if orgXP>=20 and orgXP<=40 and yp>=460 and yp<=480:
                 currMenu = "Attractions1"
@@ -377,6 +418,22 @@ def fillSquare(event):
                 addedPeople = 150
                 maxPeopleAdded = 400
                 currAtrrCost = 14500
+            if orgXP>=40 and orgXP<=60 and yp>=460 and yp<=480:
+                currMenu = "Decoration"
+                fillMenu()
+        elif(currMenu=="Decoration"):
+            if orgXP>=0 and orgXP<=20 and yp>=0 and yp<=20:
+                currAttr = "Dolphin Show"
+                currAttrWidth = 15
+                currAttrHeight = 6
+                currAttrColor = (61,7,12)
+                image = getImage("dolphinShowImg")
+                addedPeople = 150
+                maxPeopleAdded = 400
+                currAtrrCost = 14500
+            if orgXP>=40 and orgXP<=60 and yp>=460 and yp<=480:
+                currMenu = "Attractions1"
+                fillMenu()
 
     pygame.display.flip()
 
@@ -428,7 +485,7 @@ def removeAttraction(event):
                         yp = yp+ 10
                     #print(0.7*int(blocksplit[4]))
                     addCash(0.7*int(blocksplit[4]))
-                    removeVisitors(int(blocksplit[7])*1.5)
+                    removeVisitors(int(int(blocksplit[7])*1.5))
                     Blocks[idxBlocks] = blocksplit[0] + ";" + blocksplit[1] + ";" + blocksplit[2] + ";" + blocksplit[3] + ";" + blocksplit[4] + ";" + blocksplit[5] + ";" + "y" + ";" + blocksplit[7]
 
 def generateRandomChallenge():

@@ -23,6 +23,11 @@ downImg = pygame.image.load(find_data_file("data\\down.png"))
 observatoryImg = pygame.image.load(find_data_file("data\\observatory.png"))
 dolphinShowImg = pygame.image.load(find_data_file("data\\dolphin-show.png"))
 randomHatImg = pygame.image.load(find_data_file("data\\random.png"))
+btnDecoration = pygame.image.load(find_data_file("data\\btnDecoration.png"))
+tree1 = pygame.image.load(find_data_file("data\\tree1.png"))
+tree2 = pygame.image.load(find_data_file("data\\tree2.png"))
+tree3 = pygame.image.load(find_data_file("data\\tree3.png"))
+btnAttractions = pygame.image.load(find_data_file("data\\btnAttractions.png"))
 
 
 
@@ -50,5 +55,15 @@ def getImage(name):
         return dolphinShowImg
     elif(name=="randomHatImg"):
         return randomHatImg
+    elif(name=="btnDecoration"):
+        return btnDecoration
+    elif(name=="tree1"):
+        return tree1
+    elif(name=="tree2"):
+        return tree2
+    elif(name=="tree3"):
+        return tree3
+    elif(name=="btnAttractions"):
+        return btnAttractions
         
 

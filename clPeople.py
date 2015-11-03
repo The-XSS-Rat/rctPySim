@@ -44,5 +44,10 @@ def removeVisitors(Amount):
 
 def getVisitorAmount():
     return visitorAmount
+    
+def setChanceOfPlus(Amount):
+    global chanceOfPlus
+    chanceOfPlus = Amount
+    
 
     
