@@ -35,7 +35,7 @@ import time
 
 xres = 840
 gameXRes = 640
-yres = 480
+yres = 550
 gameYRes = 480
 sysMenuStart = 630
 attrMenuEnd = 70
@@ -75,9 +75,27 @@ def makeGrid():
     Grid = [[0 for x in range(int(gameXRes/10))] for y in range(int(yres/10))]
     fillMenu()
     pygame.display.flip()
+    
+def displayMessage(line1,line2="",line3="",typeOfMsg="Info"):
+    pygame.draw.rect(screen,(255,255,255),(4,484,546,480))
+    
+    messageFont = pygame.font.SysFont("ariel", 15)
+    messageFont.set_bold(True)
+    
+    if(typeOfMsg=="Warning" or typeOfMsg=="Error"):
+        msglabel1 = messageFont.render(line1,1,(255,0,0))
+        msglabel2 = messageFont.render(line2,1,(255,0,0))
+        msglabel3 = messageFont.render(line3,1,(255,0,0))
+    elif(typeOfMsg=="Info"):
+        msglabel1 = messageFont.render(line1,1,(0,0,0))
+        msglabel2 = messageFont.render(line2,1,(0,0,0))
+        msglabel3 = messageFont.render(line3,1,(0,0,0))
+    screen.blit(msglabel1,(20,490))
+    screen.blit(msglabel2,(20,505))
+    screen.blit(msglabel3,(20,520))
 
 def makeMainMenu():
-    menuFont = pygame.font.SysFont("monospace", 15)
+    menuFont = pygame.font.SysFont("ariel", 15)
 
     infolabel1 = menuFont.render("Choose a dificulty to start:",1,(0,0,0))
     screen.blit(infolabel1,(10,10))
@@ -95,7 +113,7 @@ def makeMainMenu():
     pygame.display.flip()
 
 def makeMenuItemAttractions(screen,w,h,xs,ys,t1x,t1y,t2x,t2y,t3x,t3y,txt1,txt2,txt3,imgName):
-    myfont = pygame.font.SysFont("monospace", 11)
+    myfont = pygame.font.SysFont("ariel", 15)
     screen.blit(pygame.transform.scale(getImage(imgName),(w,h)),(xs,ys))
     labelTextAttrRC = myfont.render(txt1, 1, (0,0,0))
     labelTextAttrRC2 = myfont.render(txt2, 1, (0,0,0))
@@ -105,7 +123,7 @@ def makeMenuItemAttractions(screen,w,h,xs,ys,t1x,t1y,t2x,t2y,t3x,t3y,txt1,txt2,t
     screen.blit(labelPriceAttrRC, (t3x, t3y))
     
 def makeMenuItemDecorations(screen,w,h,xs,ys,t1x,t1y,t2x,t2y,txt1,txt2,imgName):
-    myfont = pygame.font.SysFont("monospace", 11)
+    myfont = pygame.font.SysFont("ariel", 15)
     screen.blit(pygame.transform.scale(getImage(imgName),(w,h)),(xs,ys))
     labelTextAttrRC = myfont.render(txt1, 1, (0,0,0))
     labelPriceAttrRC = myfont.render(txt2, 1, (0,0,0))
@@ -117,7 +135,7 @@ def fillMenu():
     
     pygame.draw.rect(screen,(255,255,255),(0,0,70,480))
     
-    myfont = pygame.font.SysFont("monospace", 11)
+    myfont = pygame.font.SysFont("ariel", 15)
     
     #righthandSide menu
     screen.blit(pygame.transform.scale(getImage("randomHatImg"),(20,20)),(sysMenuStart+10,430))
@@ -153,6 +171,7 @@ def fillMenu():
         makeMenuItemDecorations(screen,20,20,0,60,0,80,0,90,"tree-2","€ 200","tree2")
         #Tree 3
         makeMenuItemDecorations(screen,20,20,0,120,0,140,0,150,"tree-3","€ 350","tree3")
+        screen.blit(pygame.transform.scale(getImage("btnAttractions"),(20,20)),(40,460))
         
     elif(currMenu=="Shows"):#FILlER CODE
         # Dolphin show
@@ -172,21 +191,21 @@ def mainMenuClick(event):
     yp = event.pos[1]
     xp = event.pos[0]
     
-    if(yp>=25 and yp<= 40 and xp >=10 and xp <= 40):
+    if(yp>=25 and yp<= 40 and xp >=10 and xp <= 50):
         Screenmode = "MG;E"
         addCash(10000)
         AddToVisitors(60)
         setModifier(5)
         setChanceOfPlus(75)
         makeGrid()
-    elif(yp>=41 and yp<= 56 and xp >=10 and xp <= 40):
+    elif(yp>=41 and yp<= 56 and xp >=10 and xp <= 50):
         Screenmode = "MG;M"
         addCash(4000)
         setModifier(2)
         AddToVisitors(60)
         setChanceOfPlus(60)
         makeGrid()
-    elif(yp>=57 and yp<= 82 and xp >=10 and xp <= 40):
+    elif(yp>=57 and yp<= 82 and xp >=10 and xp <= 50):
         Screenmode = "MG;H"
         makeGrid()
     print(Screenmode)
@@ -218,14 +237,13 @@ def fillSquare(event):
             while w <= attr1.getWidth():
                 try:
                     if Grid[int(yp/10)][int(xp/10)] == 1:
-                        print("Er kan hier geen blok van deze grote worden geplaatst. Er staat reeds een blok in de weg./ No blocked can be placed here, already a block underlying")
-                        #print(int(yp/10),int(xp/10),Grid[int(yp/10)][int(xp/10)])
+                        displayMessage("A block of this size can't be placed here","There is already a block in the way","<Warn 01>","Warning")
                         return
                     else:
                         xp += 10
                         w+=1
                 except:
-                    print("Er kan hier geen blok van deze grote worden geplaatst. Dit valt buiten het venster/No blocked can be placed here, outside of window space")
+                    displayMessage("A block of this size can't be placed here","It would fall outside of the playing field","<Warn 02>","Warning")
                     return
             yp+=10
             h+=1
@@ -237,21 +255,19 @@ def fillSquare(event):
         if(getCashInt()>=attr1.getCost()):
             blockText = str(orgXP) + ";" + str(yp) + ";" + str((attr1.getWidth()+1)*10) + ";" + str((attr1.getHeight()+1)*10) + ";" + str(attr1.getCost()) + ";" + str(len(Attractions)-1) + ";n;" + str(addedPeople)
             Blocks.append(blockText)
-            #print(Blocks)
             screen.blit(pygame.transform.scale(attr1.getImage(),((attr1.getWidth()+1)*10,(attr1.getHeight()+1)*10)),(orgXP,yp))
             while h <= attr1.getHeight():
                 xp = int(event.pos[0]/10)*10 + 1#0 is the x position
                 rectange = (xp,yp,10,10)
                 w=0
                 while w <= attr1.getWidth():
-                    #print(int(yp/10),int(xp/10),Grid[int(yp/10)][int(xp/10)])
                     try:
                         #pygame.draw.rect(screen, attr1.getColor(), (xp, yp, 9, 9))
                         Grid[int(yp/10)][int(xp/10)] = 1
                         xp += 10
                         w+=1
                     except:
-                        print("Fout bij het plaatsen van blok./Error placing block.")
+                        displayMessage("Error placing a block","","","Error")
                         break
                 yp+=10
                 h+=1
@@ -259,7 +275,8 @@ def fillSquare(event):
             setMaxVisitors(maxPeopleAdded)
             AddToVisitors(addedPeople)
         else:
-            print("Niet genoeg geld/Not enough cash")
+            displayMessage("You don't have enough cash","<Info cash>")
+
     elif orgXP>=sysMenuStart:
         print("sysMenu clicked")
         if orgXP >= sysMenuStart+10 and orgXP <= sysMenuStart+10+20 and yp >= 430 and yp <=430+20:
@@ -462,7 +479,7 @@ def generateRandomChallenge():
 def checkGoal():
     global clockticks,moneyTarget,visitorTarget
     
-    myfont = pygame.font.SysFont("monospace", 15)
+    myfont = pygame.font.SysFont("ariel", 17)
     if(clockticks>targetClockTick):
         labelTextWon = myfont.render("Failed!!!", 1, (255,0,0))            
         screen.blit(labelTextWon, (640, 400))
@@ -504,10 +521,12 @@ def main():
             checkGoal()
             generateCash()
             # initialize font; must be called after 'pygame.init()' to avoid 'Font not Initialized' error
-            myfont = pygame.font.SysFont("monospace", 15)
+            myfont = pygame.font.SysFont("ariel", 17)
 
             # Erase previous labels
             pygame.draw.rect(screen,(255,255,255),(641,0,740,300))
+            # Draw the messagebox
+            pygame.draw.rect(screen,(130,130,130),(0,480,839,70),4)
 
             # render text
             labelTextVisitors = myfont.render("Num. of visitors", 1, (0,0,0))
