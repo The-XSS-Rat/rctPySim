@@ -72,23 +72,11 @@ def makeGrid():
     for x in range (70,gameXRes,10):
         for y in range (0,gameYRes,10):
             screen.blit(pygame.transform.scale(getImage("grassTileImg"),(10,10)),(x,y))
-
-    #for x in range(70,gameXRes+10,10):
-        #pygame.draw.line(screen,(255,0,0),(x,0),(x,yres),1)
-        #x = x + 10
-        
-    #for y in range(0,490,10):
-        #pygame.draw.line(screen,(255,0,0),(70,y), (gameXRes,y),1)
-        #y = y + 10
-        #done = 0
     Grid = [[0 for x in range(int(gameXRes/10))] for y in range(int(yres/10))]
-    
-    
-    # Do not know why this is in here: Grid[30][15] = 1
     fillMenu()
     pygame.display.flip()
 
-def makeMenu():
+def makeMainMenu():
     menuFont = pygame.font.SysFont("monospace", 15)
 
     infolabel1 = menuFont.render("Choose a dificulty to start:",1,(0,0,0))
@@ -106,7 +94,23 @@ def makeMenu():
     
     pygame.display.flip()
 
-        
+def makeMenuItemAttractions(screen,w,h,xs,ys,t1x,t1y,t2x,t2y,t3x,t3y,txt1,txt2,txt3,imgName):
+    myfont = pygame.font.SysFont("monospace", 11)
+    screen.blit(pygame.transform.scale(getImage(imgName),(w,h)),(xs,ys))
+    labelTextAttrRC = myfont.render(txt1, 1, (0,0,0))
+    labelTextAttrRC2 = myfont.render(txt2, 1, (0,0,0))
+    labelPriceAttrRC = myfont.render(txt3, 1, (0,0,0))
+    screen.blit(labelTextAttrRC, (t1x,t1y))
+    screen.blit(labelTextAttrRC2, (t2x, t2y))
+    screen.blit(labelPriceAttrRC, (t3x, t3y))
+    
+def makeMenuItemDecorations(screen,w,h,xs,ys,t1x,t1y,t2x,t2y,txt1,txt2,imgName):
+    myfont = pygame.font.SysFont("monospace", 11)
+    screen.blit(pygame.transform.scale(getImage(imgName),(w,h)),(xs,ys))
+    labelTextAttrRC = myfont.render(txt1, 1, (0,0,0))
+    labelPriceAttrRC = myfont.render(txt2, 1, (0,0,0))
+    screen.blit(labelTextAttrRC, (t1x,t1y))
+    screen.blit(labelPriceAttrRC, (t2x, t2y))
 
 def fillMenu():  
     global currMenu
@@ -123,111 +127,32 @@ def fillMenu():
     screen.blit(labelText2, (sysMenuStart+10, 460))
 
     if(currMenu=="Attractions1"):
-        # Merry-go-round
-        #pygame.draw.rect(screen,(204,0,102),(0,0,20,20))
-        screen.blit(pygame.transform.scale(getImage("merryGoRoundImg"),(20,20)),(0,0))
-        labelTextAttrRC = myfont.render("Merry-go-", 1, (0,0,0))
-        labelTextAttrRC2 = myfont.render("Round", 1, (0,0,0))
-        labelPriceAttrRC = myfont.render("€ 1.500", 1, (0,0,0))
-        screen.blit(labelTextAttrRC, (0, 20))
-        screen.blit(labelTextAttrRC2, (0, 30))
-        screen.blit(labelPriceAttrRC, (0, 40))
-        
-        # Space Sim
-        #pygame.draw.rect(screen,(255,255,0),(0,70,20,20))
-        screen.blit(pygame.transform.scale(getImage("spaceSimImg"),(20,20)),(0,70))
-        labelTextAttrRC = myfont.render("Space-", 1, (0,0,0))
-        labelTextAttrRC2 = myfont.render("Sim", 1, (0,0,0))
-        labelPriceAttrRC = myfont.render("€ 3.200", 1, (0,0,0))
-        screen.blit(labelTextAttrRC, (0, 90))
-        screen.blit(labelTextAttrRC2, (0, 100))
-        screen.blit(labelPriceAttrRC, (0, 110))
-
-        # Haunted mansion
-        #pygame.draw.rect(screen,(106,207,72),(0,210,20,20))
-        screen.blit(pygame.transform.scale(getImage("hauntedMansionImg"),(20,20)),(0,140))
-        # render text
-        labelTextAttrRC = myfont.render("Haunted-", 1, (0,0,0))
-        labelTextAttrRC2 = myfont.render("Mansions", 1, (0,0,0))
-        labelPriceAttrRC = myfont.render("€ 4.500", 1, (0,0,0))
-        screen.blit(labelTextAttrRC, (0, 160))
-        screen.blit(labelTextAttrRC2, (0, 170))
-        screen.blit(labelPriceAttrRC, (0, 180))
-        
-        # Water slide
-        #pygame.draw.rect(screen,(61,7,12),(0,140,20,20))
-        screen.blit(pygame.transform.scale(getImage("waterSlideImg"),(20,20)),(0,210))
-        # render text
-        labelTextAttrRC = myfont.render("Water-", 1, (0,0,0))
-        labelTextAttrRC2 = myfont.render("Slide", 1, (0,0,0))
-        labelPriceAttrRC = myfont.render("€ 13.000", 1, (0,0,0))
-        screen.blit(labelTextAttrRC, (0, 230))
-        screen.blit(labelTextAttrRC2, (0, 240))
-        screen.blit(labelPriceAttrRC, (0, 250))
-        # Maze
-        #pygame.draw.rect(screen,(204,0,102),(0,0,20,20))
-        screen.blit(pygame.transform.scale(getImage("mazeImg"),(20,20)),(0,280))
-        labelTextAttrRC = myfont.render("Hedge-", 1, (0,0,0))
-        labelTextAttrRC2 = myfont.render("Maze", 1, (0,0,0))
-        labelPriceAttrRC = myfont.render("€ 2.500", 1, (0,0,0))
-        screen.blit(labelTextAttrRC, (0, 300))
-        screen.blit(labelTextAttrRC2, (0, 310))
-        screen.blit(labelPriceAttrRC, (0, 320))
-        #Observatory
-        #pygame.draw.rect(screen,(204,0,102),(0,0,20,20))
-        screen.blit(pygame.transform.scale(getImage("observatoryImg"),(20,20)),(0,350))
-        labelTextAttrRC = myfont.render("Obser-", 1, (0,0,0))
-        labelTextAttrRC2 = myfont.render("vatory", 1, (0,0,0))
-        labelPriceAttrRC = myfont.render("€ 500", 1, (0,0,0))
-        screen.blit(labelTextAttrRC, (0, 370))
-        screen.blit(labelTextAttrRC2, (0, 380))
-        screen.blit(labelPriceAttrRC, (0, 390))
-        
+        #makeMenuItem(screen,w,h,xs,ys,t1x,t1y,t2x,t2y,t3x,t3y,txt1,txt2,txt3,imgName)
+        makeMenuItemAttractions(screen,20,20,0,0,0,20,0,30,0,40,"Merry-go-","Round","€ 1.500","merryGoRoundImg")
+        makeMenuItemAttractions(screen,20,20,0,70,0,90,0,100,0,110,"Space-","Sim","€ 3.200","spaceSimImg")
+        makeMenuItemAttractions(screen,20,20,0,140,0,160,0,170,0,180,"Haunted-","Mansion","€ 4.500","hauntedMansionImg")
+        makeMenuItemAttractions(screen,20,20,0,210,0,230,0,240,0,250,"Water-","Slide","€ 13.500","waterSlideImg")
+        makeMenuItemAttractions(screen,20,20,0,280,0,300,0,310,0,320,"Hedge-","Maze","€ 2.500","mazeImg")
+        makeMenuItemAttractions(screen,20,20,0,350,0,370,0,380,0,390,"Hedge-","Maze","€ 2.500","observatoryImg")
         #Down arrow
         screen.blit(pygame.transform.scale(getImage("downImg"),(20,20)),(0,460))
-        
         #Decorations button
         screen.blit(pygame.transform.scale(getImage("btnDecoration"),(20,20)),(40,460))
-
     elif(currMenu=="Attractions2"):
-        # Dolphin Show
-        #pygame.draw.rect(screen,(204,0,102),(0,0,20,20))
-        screen.blit(pygame.transform.scale(getImage("dolphinShowImg"),(20,20)),(0,0))
-        labelTextAttrRC = myfont.render("Dolphin-", 1, (0,0,0))
-        labelTextAttrRC2 = myfont.render("Show", 1, (0,0,0))
-        labelPriceAttrRC = myfont.render("€ 14.500", 1, (0,0,0))
-        screen.blit(labelTextAttrRC, (0, 20))
-        screen.blit(labelTextAttrRC2, (0, 30))
-        screen.blit(labelPriceAttrRC, (0, 40))
-        
+        makeMenuItemAttractions(screen,20,20,0,0,0,20,0,30,0,40,"Dolphin-","Show","€ 14.500","dolphinShowImg")
         #UP & DOWN arrows
         #screen.blit(pygame.transform.scale(getImage("downImg"),(20,20)),(0,460))
         screen.blit(pygame.transform.scale(getImage("upImg"),(20,20)),(20,460))
         screen.blit(pygame.transform.scale(getImage("btnDecoration"),(20,20)),(40,460))
 
     elif(currMenu=="Decoration"):
+        #def makeMenuItemDecorations(screen,w,h,xs,ys,t1x,t1y,t2x,t2y,txt1,txt2,imgName):
         #Tree1
-        #pygame.draw.rect(screen,(204,0,102),(0,0,20,20))
-        screen.blit(pygame.transform.scale(getImage("tree1"),(20,20)),(0,0))
-        labelTextAttrRC = myfont.render("tree-1", 1, (0,0,0))
-        labelTextAttrRC2 = myfont.render("", 1, (0,0,0))
-        labelPriceAttrRC = myfont.render("€ 100", 1, (0,0,0))
-        screen.blit(labelTextAttrRC, (0, 20))
-        screen.blit(labelPriceAttrRC, (0, 30))
+        makeMenuItemDecorations(screen,20,20,0,0,0,20,0,30,"tree-1","€ 100","tree1")
         #Boom 2
-        screen.blit(pygame.transform.scale(getImage("tree2"),(20,20)),(0,60))
-        labelTextAttrRC = myfont.render("tree-2", 1, (0,0,0))
-        labelPriceAttrRC = myfont.render("€ 200", 1, (0,0,0))
-        screen.blit(labelTextAttrRC, (0, 80))
-        screen.blit(labelPriceAttrRC, (0, 90))
+        makeMenuItemDecorations(screen,20,20,0,60,0,80,0,90,"tree-2","€ 200","tree2")
         #Tree 3
-        screen.blit(pygame.transform.scale(getImage("tree3"),(20,20)),(0,120))
-        labelTextAttrRC = myfont.render("tree-3", 1, (0,0,0))
-        labelPriceAttrRC = myfont.render("€ 350", 1, (0,0,0))
-        screen.blit(labelTextAttrRC, (0, 140))
-        screen.blit(labelPriceAttrRC, (0, 150))
-        #screen.blit(pygame.transform.scale(getImage("downImg"),(20,20)),(0,460))
-        screen.blit(pygame.transform.scale(getImage("btnAttractions"),(20,20)),(40,460))
+        makeMenuItemDecorations(screen,20,20,0,120,0,140,0,150,"tree-3","€ 350","tree3")
         
     elif(currMenu=="Shows"):#FILlER CODE
         # Dolphin show
@@ -568,7 +493,7 @@ def main():
     
     done = 0
     if(Screenmode=="MM"):
-        makeMenu()
+        makeMainMenu()
     else:
         makeGrid()
     

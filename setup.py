@@ -6,7 +6,7 @@ includefiles = ['data/dolphin-show.png','data/down.png','data/grasstile.png','da
 
 setup(
     name = "rctPySim",
-    version = "0.1",
+    version = "0.1.1",
     description = "Theme Park Py Sim",
     options = {'build_exe': {'include_files':includefiles}}, 
     executables = [Executable("C:\\Users\\mxtwt\\Desktop\\Python scripts\\rctPySim\\MainGame.py"),])
