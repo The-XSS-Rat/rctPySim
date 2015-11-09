@@ -10,7 +10,6 @@
 #DONE: build in menu options
 
 
-
 #TODO: REFINE: Add money to user for destroying building(already implemented but i want to give less money when the building is older.
 #TODO: Refine the money making process
 #TODO: Refine the random objective(i.e. number of attractions before time-unit
@@ -72,7 +71,7 @@ def makeGrid():
     for x in range (70,gameXRes,10):
         for y in range (0,gameYRes,10):
             screen.blit(pygame.transform.scale(getImage("grassTileImg"),(10,10)),(x,y))
-    Grid = [[0 for x in range(int(gameXRes/10))] for y in range(int(yres/10))]
+    Grid = [[0 for x in range(int(gameXRes/10))] for y in range(int(gameYRes/10))]
     fillMenu()
     pygame.display.flip()
     
@@ -106,9 +105,9 @@ def makeMainMenu():
     startGameLabelE = menuFont.render("EASY",1,(255,255,255))
     startGameLabelM = menuFont.render("MEDI",1,(255,255,255))
     startGameLabelH = menuFont.render("HARD",1,(255,255,255))
-    screen.blit(startGameLabelE,(12,25))
-    screen.blit(startGameLabelM,(12,41))
-    screen.blit(startGameLabelH,(12,57))
+    screen.blit(startGameLabelE,(12,28))
+    screen.blit(startGameLabelM,(12,44))
+    screen.blit(startGameLabelH,(12,60))
     
     pygame.display.flip()
 
@@ -278,7 +277,7 @@ def fillSquare(event):
             displayMessage("You don't have enough cash","<Info cash>")
 
     elif orgXP>=sysMenuStart:
-        print("sysMenu clicked")
+        displayMessage("sysMenu clicked","<Info 2>")
         if orgXP >= sysMenuStart+10 and orgXP <= sysMenuStart+10+20 and yp >= 430 and yp <=430+20:
             generateRandomChallenge()
             
