@@ -20,6 +20,11 @@
 #TODO: Make moving sprites by using a general function
 #TODO: Fill in the decorations menu
 #TODO: Add more attractions
+#TODO: Add loans
+#TODO: Add roads
+#TODO: Add random R&D(research a new attraction, with a fail chance depending on the amount of money you put towards it)
+#TODO: Add visitor happyness stats
+#TODO: Add more scenery
 
 
 
