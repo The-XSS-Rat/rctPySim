@@ -6,6 +6,7 @@ from clPeople import getPeopleInt
 locale.setlocale( locale.LC_ALL, '' )
 
 playerCash = 4500
+loan = 4500
 modifier = 1
 
 def getCashStr():
@@ -32,4 +33,23 @@ def generateCash():
     if(randint(0,100)<10):
         playerCash += randint(0,1) * getPeopleInt() * modifier
 
+def setLoan(Amount):
+    global loan
+    loan = Amount
+
+def addLoan(Amount):
+    global loan
+    loan += Amount
+    
+def lowerLoan(Amount):
+    global loan
+    loan -= Amount
+    
+def getIntLoan():
+    global loan
+    return int(loan)
+    
+def getStrLoan():
+    global loan
+    return str(locale.currency(loan,grouping=True))
     

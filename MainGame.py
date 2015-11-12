@@ -8,6 +8,7 @@
 #DONE: Make a decorations module
 #DONE: Make the random objective button function(possibly random, possible not random)
 #DONE: build in menu options
+#DONE: Added loans
 
 
 #TODO: REFINE: Add money to user for destroying building(already implemented but i want to give less money when the building is older.
@@ -21,7 +22,6 @@
 #TODO: Fill in the decorations menu
 #TODO: Add more attractions
 #TODO: Add loans
-#TODO: Add roads
 #TODO: Add random R&D(research a new attraction, with a fail chance depending on the amount of money you put towards it)
 #TODO: Add visitor happyness stats
 #TODO: Add more scenery
@@ -140,8 +140,19 @@ def fillMenu():
     pygame.draw.rect(screen,(255,255,255),(0,0,70,480))
     
     myfont = pygame.font.SysFont("ariel", 15)
+    myfontLoans = pygame.font.SysFont("ariel", 30)
     
     #righthandSide menu
+    labelLoan = myfont.render("Loan: " + getStrLoan(), 1, (0,0,0))
+    labelLoanAdd = myfontLoans.render("+", 1, (0,0,0))
+    labelLoanRemove = myfontLoans.render("-", 1, (0,0,0))
+    screen.blit(labelLoan, (sysMenuStart+41, 420))
+    screen.blit(labelLoanAdd, (sysMenuStart+12, 410))
+    screen.blit(labelLoanRemove, (sysMenuStart+28, 410))
+    pygame.draw.rect(screen,(0,0,0),(sysMenuStart+10,413,15,15),2)
+    pygame.draw.rect(screen,(0,0,0),(sysMenuStart+25,413,15,15),2)
+
+    #random challenge
     screen.blit(pygame.transform.scale(getImage("randomHatImg"),(20,20)),(sysMenuStart+10,430))
     labelText = myfont.render("Generate a", 1, (0,0,0))
     labelText2 = myfont.render("Random challenge", 1, (0,0,0))
@@ -200,11 +211,13 @@ def mainMenuClick(event):
         addCash(10000)
         AddToVisitors(60)
         setModifier(5)
+        addLoan(10000)
         setChanceOfPlus(75)
         makeGrid()
     elif(yp>=41 and yp<= 56 and xp >=10 and xp <= 50):
         Screenmode = "MG;M"
         addCash(4000)
+        addLoan(4000)
         setModifier(2)
         AddToVisitors(60)
         setChanceOfPlus(60)
@@ -285,7 +298,13 @@ def fillSquare(event):
         displayMessage("sysMenu clicked","<Info 2>")
         if orgXP >= sysMenuStart+10 and orgXP <= sysMenuStart+10+20 and yp >= 430 and yp <=430+20:
             generateRandomChallenge()
-            
+        if orgXP >= sysMenuStart+10 and orgXP <= sysMenuStart+10+15 and yp >=413-5 and yp <= 413+15:
+            addLoan(1000)
+            addCash(1000)
+        if orgXP >= sysMenuStart+25 and orgXP <= sysMenuStart+25+15 and yp >=413-5 and yp <= 413+15:
+            lowerLoan(1000)
+            lowerCash(1000)
+                    
     else:
         print("menu tapped")
         #attraction list
@@ -531,7 +550,13 @@ def main():
             pygame.draw.rect(screen,(255,255,255),(641,0,740,300))
             # Draw the messagebox
             pygame.draw.rect(screen,(130,130,130),(0,480,839,70),4)
+            # Erase the previous loan box
+            pygame.draw.rect(screen,(255,255,255),(sysMenuStart+41,420,90,20))
+            #    screen.blit(labelLoan, (sysMenuStart+41, 420))
 
+            # Render Loan
+            labelLoan = myfont.render("Loan: " + getStrLoan(), 1, (0,0,0))
+            screen.blit(labelLoan, (sysMenuStart+41, 420))
             # render text
             labelTextVisitors = myfont.render("Num. of visitors", 1, (0,0,0))
             labelCounterVisitors = myfont.render(getPeopleStr(), 1, (0,0,0))
@@ -539,6 +564,7 @@ def main():
             labelTextClock= myfont.render("Clockticks", 1, (0,0,0))
             labelTextClockTicks= myfont.render(str(clockticks), 1, (0,0,0))
             labelCounterMoney = myfont.render(getCashStr(), 1, (0,0,0))
+            
             screen.blit(labelTextVisitors, (640, 0))
             screen.blit(labelCounterVisitors, (640, 13))
             screen.blit(labelTextMoney, (640, 26))
