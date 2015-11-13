@@ -13,7 +13,7 @@
 
 #TODO: REFINE: Add money to user for destroying building(already implemented but i want to give less money when the building is older.
 #TODO: Refine the money making process
-#TODO: Refine the random objective(i.e. number of attractions before time-unit
+#TODO: Refine the random objective(i.e. number of attractions before time-unit/Pay off loan by(+ have x amount of money))
 #TODO: Make game scaleable(ui)
 #TODO: Refine: Adept difficulty
 #TODO: Expand a main menu
@@ -21,10 +21,10 @@
 #TODO: Make moving sprites by using a general function
 #TODO: Fill in the decorations menu
 #TODO: Add more attractions
-#TODO: Add loans
 #TODO: Add random R&D(research a new attraction, with a fail chance depending on the amount of money you put towards it)
 #TODO: Add visitor happyness stats
 #TODO: Add more scenery
+#TODO: Add roads
 
 
 
@@ -212,12 +212,14 @@ def mainMenuClick(event):
         AddToVisitors(60)
         setModifier(5)
         addLoan(10000)
+        setLoanLimit(100000)
         setChanceOfPlus(75)
         makeGrid()
     elif(yp>=41 and yp<= 56 and xp >=10 and xp <= 50):
         Screenmode = "MG;M"
         addCash(4000)
         addLoan(4000)
+        setLoanLimit(50000)
         setModifier(2)
         AddToVisitors(60)
         setChanceOfPlus(60)
@@ -301,9 +303,9 @@ def fillSquare(event):
         if orgXP >= sysMenuStart+10 and orgXP <= sysMenuStart+10+15 and yp >=413-5 and yp <= 413+15:
             addLoan(1000)
             addCash(1000)
+            displayMessage(addLoan(1000),"","","Info")
         if orgXP >= sysMenuStart+25 and orgXP <= sysMenuStart+25+15 and yp >=413-5 and yp <= 413+15:
-            lowerLoan(1000)
-            lowerCash(1000)
+            lowerCash(int(lowerLoan(1000)))
                     
     else:
         print("menu tapped")
@@ -551,7 +553,7 @@ def main():
             # Draw the messagebox
             pygame.draw.rect(screen,(130,130,130),(0,480,839,70),4)
             # Erase the previous loan box
-            pygame.draw.rect(screen,(255,255,255),(sysMenuStart+41,420,90,20))
+            pygame.draw.rect(screen,(255,255,255),(sysMenuStart+41,420,100,20))
             #    screen.blit(labelLoan, (sysMenuStart+41, 420))
 
             # Render Loan

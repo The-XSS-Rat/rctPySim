@@ -6,8 +6,9 @@ from clPeople import getPeopleInt
 locale.setlocale( locale.LC_ALL, '' )
 
 playerCash = 4500
-loan = 4500
+loan = 4000
 modifier = 1
+loanLimit = 15000
 
 def getCashStr():
     return str(locale.currency(playerCash,grouping=True))
@@ -36,14 +37,30 @@ def generateCash():
 def setLoan(Amount):
     global loan
     loan = Amount
+    
+def setLoanLimit(Amount):
+    global loanLimit
+    loanLimit = Amount
 
 def addLoan(Amount):
     global loan
-    loan += Amount
+    message = "+ €1.000 geleend/loaned"
+    if(loan + Amount > loanLimit):
+        message = "Je kan niet meer dan " + str(locale.currency(loanLimit,grouping=True)) + " lenen"
+    else:
+        loan += Amount
+    return message
     
 def lowerLoan(Amount):
     global loan
-    loan -= Amount
+    AmountWithdrawn = 0
+    if(loan - Amount < 0):
+        AmountWithdrawn = loan
+        loan = 0
+    else:
+        loan -= Amount
+        AmountWithdrawn = Amount
+    return int(AmountWithdrawn)
     
 def getIntLoan():
     global loan
