@@ -39,6 +39,10 @@
 
 
 import pygame,os,sys
+try:
+    import pygame._view
+except:
+    pass
 from pygame import *
 from clAttraction import Attraction
 from clPeople import *
@@ -92,7 +96,7 @@ def makeGrid():
     pygame.display.flip()
     
 def displayMessage(line1,line2="",line3="",typeOfMsg="Info"):
-    pygame.draw.rect(screen,(255,255,255),(4,484,546,480))
+    pygame.draw.rect(screen,(255,255,255),(4,484,546,60))
     
     messageFont = pygame.font.SysFont("ariel", 15)
     messageFont.set_bold(True)
@@ -153,6 +157,20 @@ def drawProgressBar(value):
     pygame.draw.rect(screen,(255,0,0),(642,220,180,20))
     width = int(value)*180/100
     pygame.draw.rect(screen,(0,255,0),(642,220,width,20))
+    
+def cleanAttraction():
+    global currAttr,currAttrWidth,currAttrHeight,currAttrColor,addedPeople,addedHappyness,image,maxPeopleAdded,currAtrrCost
+    currAttr = ""
+    currAttrWidth = 0
+    currAttrHeight = 0
+    currAttrColor = ""
+    addedPeople = 0
+    addedHappyness = 0
+    image = ""
+    maxPeopleAdded = 0
+    currAtrrCost = 0
+    pygame.draw.rect(screen,(255,255,255),(4,484,546,60))
+
 
 def fillMenu():  
     global currMenu
@@ -193,6 +211,8 @@ def fillMenu():
         screen.blit(pygame.transform.scale(getImage("btnDecoration"),(20,20)),(40,460))
     elif(currMenu=="Attractions2"):
         makeMenuItemAttractions(screen,20,20,0,0,0,20,0,30,0,40,"Dolphin-","Show","€ 14.500","dolphinShowImg")
+        makeMenuItemAttractions(screen,20,20,0,70,0,90,0,100,0,110,"Concert","Show","€ 800","concert")
+        makeMenuItemAttractions(screen,20,20,0,140,0,160,0,170,0,180,"Arcade","Center","€ 1.000","arcadeImg")
         #UP & DOWN arrows
         #screen.blit(pygame.transform.scale(getImage("downImg"),(20,20)),(0,460))
         screen.blit(pygame.transform.scale(getImage("upImg"),(20,20)),(20,460))
@@ -201,11 +221,13 @@ def fillMenu():
     elif(currMenu=="Decoration"):
         #def makeMenuItemDecorations(screen,w,h,xs,ys,t1x,t1y,t2x,t2y,txt1,txt2,imgName):
         #Tree1
-        makeMenuItemDecorations(screen,20,20,0,0,0,20,0,30,"tree-1","€ 100","tree1")
+        makeMenuItemDecorations(screen,20,20,0,0,0,20,0,30,"Tree-1","€ 100","tree1")
         #Boom 2
-        makeMenuItemDecorations(screen,20,20,0,60,0,80,0,90,"tree-2","€ 200","tree2")
+        makeMenuItemDecorations(screen,20,20,0,60,0,80,0,90,"Tree-2","€ 200","tree2")
         #Tree 3
-        makeMenuItemDecorations(screen,20,20,0,120,0,140,0,150,"tree-3","€ 350","tree3")
+        makeMenuItemDecorations(screen,20,20,0,120,0,140,0,150,"Tree-3","€ 350","tree3")
+        #Paths
+        makeMenuItemDecorations(screen,20,20,0,180,0,200,0,210,"Path","€ 50","pathImg")
         screen.blit(pygame.transform.scale(getImage("btnAttractions"),(20,20)),(40,460))
         
     elif(currMenu=="Shows"):#FILlER CODE
@@ -262,7 +284,19 @@ def setAttraction(currAttrF,currAttrWidthF,currAttrHeightF,currAttrColorF,addedP
     image = imageF
     maxPeopleAdded = maxPeopleAddedF
     currAtrrCost = currAtrrCostF
+    displayAttractionMsg(imageF,currAttrF,currAtrrCost)
 
+def displayAttractionMsg(img,currAttrF,currAtrrCostF):
+    myfont = pygame.font.SysFont("ariel", 15)
+    pygame.draw.rect(screen,(255,255,255),(4,484,546,60))
+    screen.blit(pygame.transform.scale(img,(40,40)),(20,500))
+    labelTextAttrRC = myfont.render(currAttr, 1, (0,0,0))
+    labelPriceAttrRC = myfont.render(str(locale.currency(currAtrrCost,grouping=True)), 1, (0,0,0))
+    labelTextAttrSpace = myfont.render("Takes up " + str(currAttrWidth) + "x" + str(currAttrHeight) + " Spaces", 1, (0,0,0))
+    screen.blit(labelTextAttrRC, (80, 500))
+    screen.blit(labelPriceAttrRC, (80, 515))
+    screen.blit(labelTextAttrSpace, (80, 530))
+    
 def gameLeftClick(event):
     global currAttrWidth
     global currAttr
@@ -279,58 +313,61 @@ def gameLeftClick(event):
     
     Attractions.append(Attraction(currAttrWidth,currAttrHeight,currAttrColor,currAtrrCost,image))
     attr1 = Attractions[len(Attractions)-1]
-
     h=0
     yp = int(event.pos[1]/10)*10 + 1#1 is the y position
     orgXP = int(event.pos[0]/10)*10
     if orgXP >= attrMenuEnd and orgXP <= sysMenuStart:
-        while h <= attr1.getHeight():
-            xp = int(event.pos[0]/10)*10 + 1#0 is the x position
-            rectange = (xp,yp,10,10)
-            w=0
-            while w <= attr1.getWidth():
-                try:
-                    if Grid[int(yp/10)][int(xp/10)] == 1:
-                        displayMessage("A block of this size can't be placed here","There is already a block in the way","<Warn 01>","Warning")
-                        return
-                    else:
-                        xp += 10
-                        w+=1
-                except:
-                    displayMessage("A block of this size can't be placed here","It would fall outside of the playing field","<Warn 02>","Warning")
-                    return
-            yp+=10
-            h+=1
-        h=0
-        yp = int(event.pos[1]/10)*10 + 1#1 is the y position
-        orgXP = int(event.pos[0]/10)*10
-        
-        # substract the amount from players cash if available, else do nothing
-        if(getCashInt()>=attr1.getCost()):
-            blockText = str(orgXP) + ";" + str(yp) + ";" + str((attr1.getWidth()+1)*10) + ";" + str((attr1.getHeight()+1)*10) + ";" + str(attr1.getCost()) + ";" + str(len(Attractions)-1) + ";n;" + str(addedPeople)
-            Blocks.append(blockText)
-            screen.blit(pygame.transform.scale(attr1.getImage(),((attr1.getWidth()+1)*10,(attr1.getHeight()+1)*10)),(orgXP,yp))
+        if(attr1.getWidth() != 0):
+
             while h <= attr1.getHeight():
                 xp = int(event.pos[0]/10)*10 + 1#0 is the x position
                 rectange = (xp,yp,10,10)
                 w=0
                 while w <= attr1.getWidth():
                     try:
-                        #pygame.draw.rect(screen, attr1.getColor(), (xp, yp, 9, 9))
-                        Grid[int(yp/10)][int(xp/10)] = 1
-                        xp += 10
-                        w+=1
+                        if Grid[int(yp/10)][int(xp/10)] == 1:
+                            displayMessage("A block of this size can't be placed here","There is already a block in the way","<Warn 01>","Warning")
+                            return
+                        else:
+                            xp += 10
+                            w+=1
                     except:
-                        displayMessage("Error placing a block","","","Error")
-                        break
+                        displayMessage("A block of this size can't be placed here","It would fall outside of the playing field","<Warn 02>","Warning")
+                        return
                 yp+=10
                 h+=1
-            lowerCash(attr1.getCost())
-            setMaxVisitors(maxPeopleAdded)
-            addHappyness(addedHappyness)
-            AddToVisitors(addedPeople)
-        else:
-            displayMessage("You don't have enough cash","<Info cash>")
+            h=0
+            yp = int(event.pos[1]/10)*10 + 1#1 is the y position
+            orgXP = int(event.pos[0]/10)*10
+            
+            # substract the amount from players cash if available, else do nothing
+            if(getCashInt()>=attr1.getCost()):
+                blockText = str(orgXP) + ";" + str(yp) + ";" + str((attr1.getWidth()+1)*10) + ";" + str((attr1.getHeight()+1)*10) + ";" + str(attr1.getCost()) + ";" + str(len(Attractions)-1) + ";n;" + str(addedPeople)
+                Blocks.append(blockText)
+                screen.blit(pygame.transform.scale(attr1.getImage(),((attr1.getWidth()+1)*10,(attr1.getHeight()+1)*10)),(orgXP,yp))
+                while h <= attr1.getHeight():
+                    xp = int(event.pos[0]/10)*10 + 1#0 is the x position
+                    rectange = (xp,yp,10,10)
+                    w=0
+                    while w <= attr1.getWidth():
+                        try:
+                            #pygame.draw.rect(screen, attr1.getColor(), (xp, yp, 9, 9))
+                            Grid[int(yp/10)][int(xp/10)] = 1
+                            xp += 10
+                            w+=1
+                        except:
+                            displayMessage("Error placing a block","","","Error")
+                            break
+                    yp+=10
+                    h+=1
+                lowerCash(attr1.getCost())
+                setMaxVisitors(maxPeopleAdded)
+                addHappyness(addedHappyness)
+                AddToVisitors(addedPeople)
+                if(currAttr != "Path"):
+                    cleanAttraction()
+            else:
+                displayMessage("You don't have enough cash","<Info cash>")
 
     elif orgXP>=sysMenuStart:
         displayMessage("sysMenu clicked","<Info 2>")
@@ -376,6 +413,10 @@ def gameLeftClick(event):
                 fillMenu()
             if orgXP>=0 and orgXP<=20 and yp>=0 and yp<=20:
                 setAttraction("Dolphin Show",15,6,(61,7,12),75,11,getImage("dolphinShowImg"),400,14500)
+            if orgXP>=0 and orgXP<=20 and yp>=70 and yp<=90:
+                setAttraction("Concert show",9,6,(255,255,0),45,9,getImage("concert"),20,10500)
+            if orgXP>=0 and orgXP<=20 and yp>=140 and yp<=160:
+                setAttraction("Arcade",4,4,(106,207,72),2,2,getImage("arcadeImg"),50,1000)                
             if orgXP>=40 and orgXP<=60 and yp>=460 and yp<=480:
                 currMenu = "Decoration"
                 fillMenu()
@@ -386,6 +427,8 @@ def gameLeftClick(event):
                 setAttraction("Tree2",2,3,"",2,1,getImage("tree2"),12,200)
             if orgXP>=0 and orgXP<=20 and yp>=120 and yp<=140:
                 setAttraction("Tree3",2,3,"",3,1,getImage("tree3"),15,350)
+            if orgXP>=0 and orgXP<=20 and yp>=180 and yp<=200:
+                setAttraction("Path",1,1,"",0,0,getImage("pathImg"),0,50)
             if orgXP>=40 and orgXP<=60 and yp>=460 and yp<=480:
                 currMenu = "Attractions1"
                 fillMenu()
