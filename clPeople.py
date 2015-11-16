@@ -4,7 +4,7 @@ from random import randint
 visitorAmount = 0
 maxAmount = 45
 Happyness = 20
-chanceOfPlus = 55
+chanceOfPlus = 30
 
 def generatePeople():
     global chanceOfPlus

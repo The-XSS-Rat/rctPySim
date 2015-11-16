@@ -186,7 +186,7 @@ def fillMenu():
         makeMenuItemAttractions(screen,20,20,0,140,0,160,0,170,0,180,"Haunted-","Mansion","€ 4.500","hauntedMansionImg")
         makeMenuItemAttractions(screen,20,20,0,210,0,230,0,240,0,250,"Water-","Slide","€ 13.500","waterSlideImg")
         makeMenuItemAttractions(screen,20,20,0,280,0,300,0,310,0,320,"Hedge-","Maze","€ 2.500","mazeImg")
-        makeMenuItemAttractions(screen,20,20,0,350,0,370,0,380,0,390,"Observatory","","€ 500","observatoryImg")
+        makeMenuItemAttractions(screen,20,20,0,350,0,370,0,380,0,390,"Obser-","vatory","€ 500","observatoryImg")
         #Down arrow
         screen.blit(pygame.transform.scale(getImage("downImg"),(20,20)),(0,460))
         #Decorations button
@@ -231,9 +231,9 @@ def mainMenuClick(event):
         addCash(10000)
         AddToVisitors(60)
         setModifier(2)
-        addLoan(10000)
+        addLoan(1000)
         setLoanLimit(100000)
-        setChanceOfPlus(70)
+        setChanceOfPlus(51)
         makeGrid()
     elif(yp>=41 and yp<= 56 and xp >=10 and xp <= 50):
         Screenmode = "MG;M"
@@ -242,10 +242,11 @@ def mainMenuClick(event):
         setLoanLimit(50000)
         setModifier(1.5)
         AddToVisitors(60)
-        setChanceOfPlus(60)
+        setChanceOfPlus(45)
         makeGrid()
     elif(yp>=57 and yp<= 82 and xp >=10 and xp <= 50):
         Screenmode = "MG;H"
+        addLoan(10000)
         makeGrid()
     print(Screenmode)
 
@@ -350,17 +351,17 @@ def gameLeftClick(event):
         if(currMenu=="Attractions1"):
             #def setAttraction(currAttrF,currAttrWidthF,currAttrHeightF,currAttrColorF,addedPeopleF,addedHappynessF,imageF,maxPeopleAddedF,currAtrrCostF):
             if orgXP>=0 and orgXP<=20 and yp>=0 and yp<=20:
-                setAttraction("Merry-go-round",4,4,(204,0,102),5,1,getImage("merryGoRoundImg"),10,1500)
+                setAttraction("Merry-go-round",4,4,(204,0,102),3,1,getImage("merryGoRoundImg"),10,1500)
             if orgXP>=0 and orgXP<=20 and yp>=70 and yp<=90:
-                setAttraction("Space Sim",3,3,(255,255,0),20,2,getImage("spaceSimImg"),20,3200)
+                setAttraction("Space Sim",3,3,(255,255,0),10,2,getImage("spaceSimImg"),20,3200)
             if orgXP>=0 and orgXP<=20 and yp>=140 and yp<=160:
-                setAttraction("Haunted mansion",6,6,(106,207,72),30,3,getImage("hauntedMansionImg"),50,4500)
+                setAttraction("Haunted mansion",6,6,(106,207,72),15,3,getImage("hauntedMansionImg"),50,4500)
             if orgXP>=0 and orgXP<=20 and yp>=210 and yp<=230:
-                setAttraction("Water Slide",8,8,(61,7,12),100,9,getImage("waterSlideImg"),200,13000)
+                setAttraction("Water Slide",8,8,(61,7,12),50,9,getImage("waterSlideImg"),200,13000)
             if orgXP>=0 and orgXP<=20 and yp>=280 and yp<=300:
                 setAttraction("Maze",5,5,(61,7,12),40,2,getImage("mazeImg"),100,2500)
             if orgXP>=0 and orgXP<=20 and yp>=350 and yp<=370:
-                setAttraction("Observatory",4,6,(61,7,12),10,1,getImage("observatoryImg"),30,500)
+                setAttraction("Observatory",4,6,(61,7,12),5,1,getImage("observatoryImg"),30,500)
             #clicking Down menu button    
             if orgXP>=0 and orgXP<=20 and yp>=460 and yp<=480:
                 currMenu = "Attractions2"
@@ -374,17 +375,17 @@ def gameLeftClick(event):
                 currMenu = "Attractions1"
                 fillMenu()
             if orgXP>=0 and orgXP<=20 and yp>=0 and yp<=20:
-                setAttraction("Dolphin Show",15,6,(61,7,12),150,11,getImage("dolphinShowImg"),400,14500)
+                setAttraction("Dolphin Show",15,6,(61,7,12),75,11,getImage("dolphinShowImg"),400,14500)
             if orgXP>=40 and orgXP<=60 and yp>=460 and yp<=480:
                 currMenu = "Decoration"
                 fillMenu()
         elif(currMenu=="Decoration"):
             if orgXP>=0 and orgXP<=20 and yp>=0 and yp<=20:
-                setAttraction("Tree1",2,3,"",2,1,getImage("tree1"),10,100)
+                setAttraction("Tree1",2,3,"",1,1,getImage("tree1"),10,100)
             if orgXP>=0 and orgXP<=20 and yp>=60 and yp<=80:
-                setAttraction("Tree2",2,3,"",3,1,getImage("tree2"),12,100)
+                setAttraction("Tree2",2,3,"",2,1,getImage("tree2"),12,200)
             if orgXP>=0 and orgXP<=20 and yp>=120 and yp<=140:
-                setAttraction("Tree3",2,3,"",4,1,getImage("tree3"),15,100)
+                setAttraction("Tree3",2,3,"",3,1,getImage("tree3"),15,350)
             if orgXP>=40 and orgXP<=60 and yp>=460 and yp<=480:
                 currMenu = "Attractions1"
                 fillMenu()
