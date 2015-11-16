@@ -44,9 +44,9 @@ def setLoanLimit(Amount):
 
 def addLoan(Amount):
     global loan
-    message = "+ €1.000 geleend/loaned"
+    message = "Loaned + €1.000"
     if(loan + Amount > loanLimit):
-        message = "Je kan niet meer dan " + str(locale.currency(loanLimit,grouping=True)) + " lenen"
+        message = "You can not loan more then " + str(locale.currency(loanLimit,grouping=True))
     else:
         loan += Amount
     return message
