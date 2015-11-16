@@ -3,7 +3,7 @@ from random import randint
 
 visitorAmount = 0
 maxAmount = 45
-
+Happyness = 20
 chanceOfPlus = 55
 
 def generatePeople():
@@ -45,9 +45,30 @@ def removeVisitors(Amount):
 def getVisitorAmount():
     return visitorAmount
     
+def getHappyness():
+    return Happyness
+    
 def setChanceOfPlus(Amount):
     global chanceOfPlus
     chanceOfPlus = Amount
+    
+def setHappyness(Amount):
+    global Happyness
+    Happyness = Amount
+    
+def addHappyness(Amount):
+    global Happyness
+    if(Happyness+Amount >=100):
+        Happyness = 100
+    else:
+        Happyness += Amount
+    
+def removeHappyness(Amount):
+    global Happyness
+    if(happyness-Amount <=0):
+        Happyness = 0
+    else:
+        Happyness -= Amount
     
 
     

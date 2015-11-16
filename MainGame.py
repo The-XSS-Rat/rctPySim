@@ -9,6 +9,10 @@
 #DONE: Make the random objective button function(possibly random, possible not random)
 #DONE: build in menu options
 #DONE: Added loans
+#DONE: Add visitor happyness stats
+#DONE: Refine visitor happyness stats - Add more happyness when adding attraction
+#DONE: Refine visitor happyness stats - Add more happyness when adding scenery
+
 
 
 #TODO: REFINE: Add money to user for destroying building(already implemented but i want to give less money when the building is older.
@@ -25,7 +29,13 @@
 #TODO: Add visitor happyness stats
 #TODO: Add more scenery
 #TODO: Add roads
-
+#TODO: Refine visitor happyness stats - Remove happyness when removing an attraction
+#TODO: Refine visitor happyness stats - Add more happyness when roads are put to attractions
+#TODO: Refine visitor happyness stats - Add more happyness when scenery is grouped closer togheter
+#TODO: Resize board on difficulty changes
+#TODO: Remove the default attraction when none is selected
+#TODO: Make it so that attractions need to be selected multiple times if wanting to put down more
+#TODO: Make it so that when you select an attraction, You see a preview and information in the message window
 
 
 import pygame,os,sys
@@ -61,6 +71,7 @@ currAttrWidth = 2
 currAttrHeight = 2
 currAttrColor = (0, 255, 0)
 addedPeople = 1
+addedHappyness = 1
 maxPeopleAdded = 3
 currAtrrCost = 4500
 
@@ -133,6 +144,15 @@ def makeMenuItemDecorations(screen,w,h,xs,ys,t1x,t1y,t2x,t2y,txt1,txt2,imgName):
     labelPriceAttrRC = myfont.render(txt2, 1, (0,0,0))
     screen.blit(labelTextAttrRC, (t1x,t1y))
     screen.blit(labelPriceAttrRC, (t2x, t2y))
+    
+def drawProgressBar(value):
+    myfont = pygame.font.SysFont("ariel", 15)
+    visitorHappynessLabel = myfont.render("Visitor Happyness",1,(0,0,0))
+    screen.blit(visitorHappynessLabel,(642,200))
+
+    pygame.draw.rect(screen,(255,0,0),(642,220,180,20))
+    width = int(value)*180/100
+    pygame.draw.rect(screen,(0,255,0),(642,220,width,20))
 
 def fillMenu():  
     global currMenu
@@ -210,10 +230,10 @@ def mainMenuClick(event):
         Screenmode = "MG;E"
         addCash(10000)
         AddToVisitors(60)
-        setModifier(5)
+        setModifier(3)
         addLoan(10000)
         setLoanLimit(100000)
-        setChanceOfPlus(75)
+        setChanceOfPlus(70)
         makeGrid()
     elif(yp>=41 and yp<= 56 and xp >=10 and xp <= 50):
         Screenmode = "MG;M"
@@ -228,14 +248,28 @@ def mainMenuClick(event):
         Screenmode = "MG;H"
         makeGrid()
     print(Screenmode)
+
+def setAttraction(currAttrF,currAttrWidthF,currAttrHeightF,currAttrColorF="",addedPeopleF,addedHappynessF,imageF,maxPeopleAddedF,currAtrrCostF):
+    global currAttr,currAttrWidth,currAttrHeight,currAttrColor,addedPeople,addedHappyness,image,maxPeopleAdded,currAtrrCost
     
-def fillSquare(event):
+    currAttr = currAttrF
+    currAttrWidth = currAttrWidthF
+    currAttrHeight = currAttrHeightF
+    currAttrColor = currAttrColorF
+    addedPeople = addedPeopleF
+    addedHappyness = addedHappynessF
+    image = imageF
+    maxPeopleAdded = maxPeopleAddedF
+    currAtrrCost = currAtrrCostF
+
+def gameLeftClick(event):
     global currAttrWidth
     global currAttr
     global currAttrHeight
     global currAttrColor
     global Grid
     global addedPeople
+    global addedHappyness
     global maxPeopleAdded
     global currAtrrCost
     global image
@@ -292,6 +326,7 @@ def fillSquare(event):
                 h+=1
             lowerCash(attr1.getCost())
             setMaxVisitors(maxPeopleAdded)
+            addHappyness(addedHappyness)
             AddToVisitors(addedPeople)
         else:
             displayMessage("You don't have enough cash","<Info cash>")
@@ -305,70 +340,32 @@ def fillSquare(event):
             addCash(1000)
             displayMessage(addLoan(1000),"","","Info")
         if orgXP >= sysMenuStart+25 and orgXP <= sysMenuStart+25+15 and yp >=413-5 and yp <= 413+15:
-            lowerCash(int(lowerLoan(1000)))
+            result = lowerLoan(1000)
+            lowerCash(int(result['withdrawn']))
+            displayMessage(result['message'])
                     
     else:
         print("menu tapped")
         #attraction list
         if(currMenu=="Attractions1"):
+            #def setAttraction(currAttrF,currAttrWidthF,currAttrHeightF,currAttrColorF,addedPeopleF,addedHappynessF,imageF,maxPeopleAddedF,currAtrrCostF):
             if orgXP>=0 and orgXP<=20 and yp>=0 and yp<=20:
-                currAttr = "Merry-go-round"
-                currAttrWidth = 4
-                currAttrHeight = 4
-                currAttrColor = (204,0,102)
-                addedPeople = 5
-                image = getImage("merryGoRoundImg")
-                maxPeopleAdded = 10
-                currAtrrCost = 1500
+                setAttraction("Merry-go-round",4,4,(204,0,102),5,1,getImage("merryGoRoundImg"),10,1500)
             if orgXP>=0 and orgXP<=20 and yp>=70 and yp<=90:
-                currAttr = "Space Sim"
-                currAttrWidth = 3
-                currAttrHeight = 3
-                currAttrColor = (255,255,0)
-                addedPeople = 20
-                image = getImage("spaceSimImg")
-                maxPeopleAdded = 20
-                currAtrrCost = 3200
+                setAttraction("Space Sim",3,3,(255,255,0),20,2,getImage("spaceSimImg"),20,3200):
             if orgXP>=0 and orgXP<=20 and yp>=140 and yp<=160:
-                currAttr = "Haunted mansion"
-                image = getImage("hauntedMansionImg")
-                currAttrWidth = 6
-                currAttrHeight = 6
-                currAttrColor = (106,207,72)
-                addedPeople = 30
-                maxPeopleAdded = 50
-                currAtrrCost = 4500
+                setAttraction("Haunted mansion",6,6,(106,207,72),30,3,getImagegetImage("hauntedMansionImg"),50,4500)
             if orgXP>=0 and orgXP<=20 and yp>=210 and yp<=230:
-                currAttr = "Water Slide"
-                currAttrWidth = 8
-                currAttrHeight = 8
-                currAttrColor = (61,7,12)
-                image = getImage("waterSlideImg")
-                addedPeople = 100
-                maxPeopleAdded = 200
-                currAtrrCost = 13000
+                setAttraction("Water Slide",8,8,(61,7,12),100,9,getImage("waterSlideImg"),200,13000)
             if orgXP>=0 and orgXP<=20 and yp>=280 and yp<=300:
-                currAttr = "Maze"
-                currAttrWidth = 5
-                currAttrHeight = 5
-                currAttrColor = (61,7,12)
-                image = getImage("mazeImg")
-                addedPeople = 40
-                maxPeopleAdded = 100
-                currAtrrCost = 2500
+                setAttraction("Maze",5,5,(61,7,12),40,2,getImage("mazeImg"),100,2500)
             if orgXP>=0 and orgXP<=20 and yp>=350 and yp<=370:
-                currAttr = "Observatory"
-                currAttrWidth = 4
-                currAttrHeight = 6
-                currAttrColor = (61,7,12)
-                image = getImage("observatoryImg")
-                addedPeople = 10
-                maxPeopleAdded = 30
-                currAtrrCost = 500
+                setAttraction("Observatory",4,6,(61,7,12),10,1,getImage("observatoryImg"),30,500)
             #clicking Down menu button    
             if orgXP>=0 and orgXP<=20 and yp>=460 and yp<=480:
                 currMenu = "Attractions2"
                 fillMenu()
+            #Decorations menu
             if orgXP>=40 and orgXP<=60 and yp>=460 and yp<=480:
                 currMenu = "Decoration"
                 fillMenu()
@@ -377,45 +374,17 @@ def fillSquare(event):
                 currMenu = "Attractions1"
                 fillMenu()
             if orgXP>=0 and orgXP<=20 and yp>=0 and yp<=20:
-                currAttr = "Dolphin Show"
-                currAttrWidth = 15
-                currAttrHeight = 6
-                currAttrColor = (61,7,12)
-                image = getImage("dolphinShowImg")
-                addedPeople = 150
-                maxPeopleAdded = 400
-                currAtrrCost = 14500
+                setAttraction("Dolphin Show",15,6,(61,7,12),150,11,getImage("dolphinShowImg"),400,14500)
             if orgXP>=40 and orgXP<=60 and yp>=460 and yp<=480:
                 currMenu = "Decoration"
                 fillMenu()
         elif(currMenu=="Decoration"):
             if orgXP>=0 and orgXP<=20 and yp>=0 and yp<=20:
-                currAttr = "Tree1"
-                currAttrWidth = 2
-                currAttrHeight = 3
-                #currAttrColor = (61,7,12)
-                image = getImage("tree1")
-                addedPeople = 2
-                maxPeopleAdded = 10
-                currAtrrCost = 100
+                setAttraction("Tree1",2,3,"",2,1,getImage("tree1"),10,100)
             if orgXP>=0 and orgXP<=20 and yp>=60 and yp<=80:
-                currAttr = "Tree2"
-                currAttrWidth = 2
-                currAttrHeight = 3
-                #currAttrColor = (61,7,12)
-                image = getImage("tree2")
-                addedPeople = 3
-                maxPeopleAdded = 12
-                currAtrrCost = 100
+                setAttraction("Tree2",2,3,"",3,1,getImage("tree2"),12,100)
             if orgXP>=0 and orgXP<=20 and yp>=120 and yp<=140:
-                currAttr = "Tree3"
-                currAttrWidth = 2
-                currAttrHeight = 3
-                #currAttrColor = (61,7,12)
-                image = getImage("tree3")
-                addedPeople = 4
-                maxPeopleAdded = 15
-                currAtrrCost = 100
+                setAttraction("Tree3",2,3,"",4,1,getImage("tree3"),15,100)
             if orgXP>=40 and orgXP<=60 and yp>=460 and yp<=480:
                 currMenu = "Attractions1"
                 fillMenu()
@@ -588,6 +557,11 @@ def main():
             screen.blit(labelGoal2, (640, 133))
             screen.blit(labelGoal3, (640, 146))
             screen.blit(labelGoal4, (640, 159))
+            drawProgressBar(getHappyness())
+            
+            if(clockticks%500==0):
+                removeHappyness(5)
+
 
         
         
@@ -606,7 +580,7 @@ def main():
                      if(Screenmode=="MM"):
                         mainMenuClick(e) 
                      else:
-                        fillSquare(e)
+                        gameLeftClick(e)
                  elif e.button == 2:
                      print("middle button clicked")
                  elif e.button == 3:

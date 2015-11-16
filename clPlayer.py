@@ -1,7 +1,7 @@
 #!/usr/bin/python
 from random import randint
 import locale
-from clPeople import getPeopleInt
+from clPeople import getPeopleInt,getHappyness
 
 locale.setlocale( locale.LC_ALL, '' )
 
@@ -32,7 +32,7 @@ def generateCash():
     global playerCash
     global modifier
     if(randint(0,100)<10):
-        playerCash += randint(0,1) * getPeopleInt() * modifier
+        playerCash += randint(0,1) * getPeopleInt() * modifier * (getHappyness()/10)
 
 def setLoan(Amount):
     global loan
@@ -53,14 +53,17 @@ def addLoan(Amount):
     
 def lowerLoan(Amount):
     global loan
+    message = "You can't pay back any more of your loan"
     AmountWithdrawn = 0
     if(loan - Amount < 0):
         AmountWithdrawn = loan
+        message = "You can't pay back any more of your loan"
         loan = 0
     else:
         loan -= Amount
+        message = "You've payed back - " + str(locale.currency(Amount,grouping=True))
         AmountWithdrawn = Amount
-    return int(AmountWithdrawn)
+    return {"withdrawn":int(AmountWithdrawn),"message":message}
     
 def getIntLoan():
     global loan
