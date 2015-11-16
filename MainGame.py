@@ -186,7 +186,7 @@ def fillMenu():
         makeMenuItemAttractions(screen,20,20,0,140,0,160,0,170,0,180,"Haunted-","Mansion","€ 4.500","hauntedMansionImg")
         makeMenuItemAttractions(screen,20,20,0,210,0,230,0,240,0,250,"Water-","Slide","€ 13.500","waterSlideImg")
         makeMenuItemAttractions(screen,20,20,0,280,0,300,0,310,0,320,"Hedge-","Maze","€ 2.500","mazeImg")
-        makeMenuItemAttractions(screen,20,20,0,350,0,370,0,380,0,390,"Hedge-","Maze","€ 2.500","observatoryImg")
+        makeMenuItemAttractions(screen,20,20,0,350,0,370,0,380,0,390,"Observatory","","€ 500","observatoryImg")
         #Down arrow
         screen.blit(pygame.transform.scale(getImage("downImg"),(20,20)),(0,460))
         #Decorations button
@@ -230,7 +230,7 @@ def mainMenuClick(event):
         Screenmode = "MG;E"
         addCash(10000)
         AddToVisitors(60)
-        setModifier(3)
+        setModifier(2)
         addLoan(10000)
         setLoanLimit(100000)
         setChanceOfPlus(70)
@@ -240,7 +240,7 @@ def mainMenuClick(event):
         addCash(4000)
         addLoan(4000)
         setLoanLimit(50000)
-        setModifier(2)
+        setModifier(1.5)
         AddToVisitors(60)
         setChanceOfPlus(60)
         makeGrid()
@@ -249,7 +249,7 @@ def mainMenuClick(event):
         makeGrid()
     print(Screenmode)
 
-def setAttraction(currAttrF,currAttrWidthF,currAttrHeightF,currAttrColorF="",addedPeopleF,addedHappynessF,imageF,maxPeopleAddedF,currAtrrCostF):
+def setAttraction(currAttrF,currAttrWidthF,currAttrHeightF,currAttrColorF,addedPeopleF,addedHappynessF,imageF,maxPeopleAddedF,currAtrrCostF):
     global currAttr,currAttrWidth,currAttrHeight,currAttrColor,addedPeople,addedHappyness,image,maxPeopleAdded,currAtrrCost
     
     currAttr = currAttrF
@@ -352,9 +352,9 @@ def gameLeftClick(event):
             if orgXP>=0 and orgXP<=20 and yp>=0 and yp<=20:
                 setAttraction("Merry-go-round",4,4,(204,0,102),5,1,getImage("merryGoRoundImg"),10,1500)
             if orgXP>=0 and orgXP<=20 and yp>=70 and yp<=90:
-                setAttraction("Space Sim",3,3,(255,255,0),20,2,getImage("spaceSimImg"),20,3200):
+                setAttraction("Space Sim",3,3,(255,255,0),20,2,getImage("spaceSimImg"),20,3200)
             if orgXP>=0 and orgXP<=20 and yp>=140 and yp<=160:
-                setAttraction("Haunted mansion",6,6,(106,207,72),30,3,getImagegetImage("hauntedMansionImg"),50,4500)
+                setAttraction("Haunted mansion",6,6,(106,207,72),30,3,getImage("hauntedMansionImg"),50,4500)
             if orgXP>=0 and orgXP<=20 and yp>=210 and yp<=230:
                 setAttraction("Water Slide",8,8,(61,7,12),100,9,getImage("waterSlideImg"),200,13000)
             if orgXP>=0 and orgXP<=20 and yp>=280 and yp<=300:
