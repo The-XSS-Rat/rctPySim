@@ -593,6 +593,15 @@ def generateRandomChallenge():
         elif('E;L' in Screenmode):
             targetClockTicks = [10000,50000]
             moneyTargets = [35000,150000]
+        elif('M;S' in Screenmode):
+            targetClockTicks = [500,1000]
+            moneyTargets = [7500,12500]
+        elif('M;M' in Screenmode):
+            targetClockTicks = [1500,5000]
+            moneyTargets = [15000,35000]            
+        elif('M;L' in Screenmode):
+            targetClockTicks = [10000,50000]
+            moneyTargets = [50000,350000]
         else:
             targetClockTicks = [100,50000]
             moneyTargets = [5000,150000]
