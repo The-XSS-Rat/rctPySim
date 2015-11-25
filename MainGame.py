@@ -12,9 +12,9 @@
 #DONE: Add visitor happyness stats
 #DONE: Refine visitor happyness stats - Add more happyness when adding attraction
 #DONE: Refine visitor happyness stats - Add more happyness when adding scenery
-
-
-
+#DONE: Make it so that when you select an attraction, You see a preview and information in the message window
+#DONE: Make it so that attractions need to be selected multiple times if wanting to put down more
+#---------------------------------------------------------------------------
 #TODO: REFINE: Add money to user for destroying building(already implemented but i want to give less money when the building is older.
 #TODO: Refine the money making process
 #TODO: Refine the random objective(i.e. number of attractions before time-unit/Pay off loan by(+ have x amount of money))
@@ -34,9 +34,8 @@
 #TODO: Refine visitor happyness stats - Add more happyness when scenery is grouped closer togheter
 #TODO: Resize board on difficulty changes
 #TODO: Remove the default attraction when none is selected
-#TODO: Make it so that attractions need to be selected multiple times if wanting to put down more
-#TODO: Make it so that when you select an attraction, You see a preview and information in the message window
-
+#TODO: Make a save option
+#TODO: If no attraction is being build when clicking on attraction: give context menu
 
 import pygame,os,sys
 try:
@@ -70,16 +69,16 @@ Grid = []
 Blocks = []
 currMenu = "Attractions1"
 
-currAttr = "Marry-go-round"
-currAttrWidth = 2
-currAttrHeight = 2
-currAttrColor = (0, 255, 0)
-addedPeople = 1
-addedHappyness = 1
-maxPeopleAdded = 3
-currAtrrCost = 4500
+currAttr = ""
+currAttrWidth = 0
+currAttrHeight = 0
+currAttrColor = (0, 0, 0)
+addedPeople = 0
+addedHappyness = 0
+maxPeopleAdded = 0
+currAtrrCost = 0
 
-image = getImage("merryGoRoundImg")
+image = ""
 
 
 screen = pygame.display.set_mode((xres, yres))
@@ -114,20 +113,40 @@ def displayMessage(line1,line2="",line3="",typeOfMsg="Info"):
     screen.blit(msglabel3,(20,520))
 
 def makeMainMenu():
+    squarewidth = 90
+    pygame.draw.rect(screen,(255,255,255),(0,0,xres,yres))
     menuFont = pygame.font.SysFont("ariel", 15)
 
-    infolabel1 = menuFont.render("Choose a dificulty to start:",1,(0,0,0))
+    infolabel1 = menuFont.render("Choose a dificulty and length to start:",1,(0,0,0))
     screen.blit(infolabel1,(10,10))
 
-    pygame.draw.rect(screen,(0,0,0),(10,25,40,15))
-    pygame.draw.rect(screen,(0,0,0),(10,41,40,15))
-    pygame.draw.rect(screen,(0,0,0),(10,57,40,15))
-    startGameLabelE = menuFont.render("EASY",1,(255,255,255))
-    startGameLabelM = menuFont.render("MEDI",1,(255,255,255))
-    startGameLabelH = menuFont.render("HARD",1,(255,255,255))
-    screen.blit(startGameLabelE,(12,28))
-    screen.blit(startGameLabelM,(12,44))
-    screen.blit(startGameLabelH,(12,60))
+    pygame.draw.rect(screen,(0,0,0),(10,25,squarewidth,50))
+    pygame.draw.rect(screen,(0,0,0),(150,25,squarewidth,50))
+    pygame.draw.rect(screen,(0,0,0),(300,25,squarewidth,50))
+    pygame.draw.rect(screen,(0,0,0),(10,125,squarewidth,50))
+    pygame.draw.rect(screen,(0,0,0),(150,125,squarewidth,50))
+    pygame.draw.rect(screen,(0,0,0),(300,125,squarewidth,50))
+    pygame.draw.rect(screen,(0,0,0),(10,225,squarewidth,50))
+    pygame.draw.rect(screen,(0,0,0),(150,225,squarewidth,50))
+    pygame.draw.rect(screen,(0,0,0),(300,225,squarewidth,50))
+    startGameLabelES = menuFont.render("EASY-short",1,(43,188,43))
+    startGameLabelEM = menuFont.render("EASY-medium",1,(43,188,43))
+    startGameLabelEL = menuFont.render("EASY-long",1,(43,188,43))
+    startGameLabelMS = menuFont.render("MEDIUM-short",1,(0,255,255))
+    startGameLabelMM = menuFont.render("MEDIUM-medium",1,(0,255,255))
+    startGameLabelML = menuFont.render("MEDIUM-long",1,(0,255,255))
+    startGameLabelHS = menuFont.render("HARD-short",1,(255,26,13))
+    startGameLabelHM = menuFont.render("HARD-medium",1,(255,26,13))
+    startGameLabelHL = menuFont.render("HARD-long",1,(255,26,13))
+    screen.blit(startGameLabelES,(24,45))
+    screen.blit(startGameLabelEM,(160,45))
+    screen.blit(startGameLabelEL,(318,45))
+    screen.blit(startGameLabelMS,(17,145))
+    screen.blit(startGameLabelMM,(152,145))
+    screen.blit(startGameLabelML,(310,145))
+    screen.blit(startGameLabelHS,(24,245))
+    screen.blit(startGameLabelHM,(160,245))
+    screen.blit(startGameLabelHL,(318,245))
     
     pygame.display.flip()
 
@@ -191,11 +210,11 @@ def fillMenu():
     pygame.draw.rect(screen,(0,0,0),(sysMenuStart+25,413,15,15),2)
 
     #random challenge
-    screen.blit(pygame.transform.scale(getImage("randomHatImg"),(20,20)),(sysMenuStart+10,430))
-    labelText = myfont.render("Generate a", 1, (0,0,0))
-    labelText2 = myfont.render("Random challenge", 1, (0,0,0))
-    screen.blit(labelText, (sysMenuStart+10, 450))
-    screen.blit(labelText2, (sysMenuStart+10, 460))
+    #screen.blit(pygame.transform.scale(getImage("randomHatImg"),(20,20)),(sysMenuStart+10,430))
+    #labelText = myfont.render("Generate a", 1, (0,0,0))
+    #labelText2 = myfont.render("Random challenge", 1, (0,0,0))
+    #screen.blit(labelText, (sysMenuStart+10, 450))
+    #screen.blit(labelText2, (sysMenuStart+10, 460))
 
     if(currMenu=="Attractions1"):
         #makeMenuItem(screen,w,h,xs,ys,t1x,t1y,t2x,t2y,t3x,t3y,txt1,txt2,txt3,imgName)
@@ -247,30 +266,92 @@ def mainMenuClick(event):
     
     yp = event.pos[1]
     xp = event.pos[0]
-    
-    if(yp>=25 and yp<= 40 and xp >=10 and xp <= 50):
-        Screenmode = "MG;E"
+    #MG-easy-short
+    if(yp>=25 and yp<= 75 and xp >=10 and xp <= 100):
+        Screenmode = "MG;E;S"
         addCash(10000)
         AddToVisitors(60)
         setModifier(2)
         addLoan(1000)
         setLoanLimit(100000)
         setChanceOfPlus(51)
+        generateRandomChallenge()
         makeGrid()
-    elif(yp>=41 and yp<= 56 and xp >=10 and xp <= 50):
-        Screenmode = "MG;M"
+    #MG-easy-medium
+    if(yp>=25 and yp<= 75 and xp >=150 and xp <= 240):
+        Screenmode = "MG;E;M"
+        addCash(10000)
+        AddToVisitors(60)
+        setModifier(2)
+        addLoan(1000)
+        setLoanLimit(100000)
+        setChanceOfPlus(51)
+        generateRandomChallenge()
+        makeGrid()
+    #MG-easy-long
+    if(yp>=25 and yp<= 75 and xp >=300 and xp <= 390):
+        Screenmode = "MG;E;L"
+        addCash(10000)
+        AddToVisitors(60)
+        setModifier(2)
+        addLoan(1000)
+        setLoanLimit(100000)
+        setChanceOfPlus(51)
+        generateRandomChallenge()
+        makeGrid()
+    #MG-medium-short
+    elif(yp>=125 and yp<= 175 and xp >=10 and xp <= 100):
+        Screenmode = "MG;M;S"
         addCash(4000)
         addLoan(4000)
         setLoanLimit(50000)
         setModifier(1.5)
         AddToVisitors(60)
         setChanceOfPlus(45)
+        generateRandomChallenge()
         makeGrid()
-    elif(yp>=57 and yp<= 82 and xp >=10 and xp <= 50):
-        Screenmode = "MG;H"
+    #MG-medium-medium
+    elif(yp>=125 and yp<= 175 and xp >=150 and xp <= 240):
+        Screenmode = "MG;M;M"
+        addCash(4000)
+        addLoan(4000)
+        setLoanLimit(50000)
+        setModifier(1.5)
+        AddToVisitors(60)
+        setChanceOfPlus(45)
+        generateRandomChallenge()
+        makeGrid()
+    #MG-medium-medium
+    elif(yp>=125 and yp<= 175 and xp >=300 and xp <= 390):
+        Screenmode = "MG;M;L"
+        addCash(4000)
+        addLoan(4000)
+        setLoanLimit(50000)
+        setModifier(1.5)
+        AddToVisitors(60)
+        setChanceOfPlus(45)
+        generateRandomChallenge()
+        makeGrid()
+    #MG-hard-short
+    elif(yp>=225 and yp<= 275 and xp >=10 and xp <= 100):
+        Screenmode = "MG;H;S"
+        generateRandomChallenge()
+        addLoan(10000)
+        makeGrid()
+    #MG-hard-medium
+    elif(yp>=225 and yp<= 275 and xp >=150 and xp <= 240):
+        Screenmode = "MG;H;M"
+        generateRandomChallenge()
+        addLoan(10000)
+        makeGrid()
+    #MG-hard-long
+    elif(yp>=225 and yp<= 275 and xp >=300 and xp <= 390):
+        Screenmode = "MG;H;L"
+        generateRandomChallenge()
         addLoan(10000)
         makeGrid()
     print(Screenmode)
+
 
 def setAttraction(currAttrF,currAttrWidthF,currAttrHeightF,currAttrColorF,addedPeopleF,addedHappynessF,imageF,maxPeopleAddedF,currAtrrCostF):
     global currAttr,currAttrWidth,currAttrHeight,currAttrColor,addedPeople,addedHappyness,image,maxPeopleAdded,currAtrrCost
@@ -296,6 +377,17 @@ def displayAttractionMsg(img,currAttrF,currAtrrCostF):
     screen.blit(labelTextAttrRC, (80, 500))
     screen.blit(labelPriceAttrRC, (80, 515))
     screen.blit(labelTextAttrSpace, (80, 530))
+
+##def checkForDrawSquare(event):
+    #yp = int(event.pos[1]/10)*10 + 1#1 is the y position
+    #xp = int(event.pos[0]/10)*10
+    #if(xp >= attrMenuEnd and xp <= sysMenuStart):
+        ##Make a screenshot of the playing field
+        #rect = pygame.Rect(xres - attrMenuEnd, 0, gameXRes-sysMenuStart, gameYRes)
+        #sub = screen.subsurface(rect)
+        #pygame.image.save(sub, "screenshot.jpg")
+        #pygame.draw.rect(screen,(255,0,0),(xp,yp,50,50),1)
+        
     
 def gameLeftClick(event):
     global currAttrWidth
@@ -371,8 +463,8 @@ def gameLeftClick(event):
 
     elif orgXP>=sysMenuStart:
         displayMessage("sysMenu clicked","<Info 2>")
-        if orgXP >= sysMenuStart+10 and orgXP <= sysMenuStart+10+20 and yp >= 430 and yp <=430+20:
-            generateRandomChallenge()
+        #if orgXP >= sysMenuStart+10 and orgXP <= sysMenuStart+10+20 and yp >= 430 and yp <=430+20:
+            #generateRandomChallenge()
         if orgXP >= sysMenuStart+10 and orgXP <= sysMenuStart+10+15 and yp >=413-5 and yp <= 413+15:
             addLoan(1000)
             addCash(1000)
@@ -487,21 +579,31 @@ def removeAttraction(event):
                     Blocks[idxBlocks] = blocksplit[0] + ";" + blocksplit[1] + ";" + blocksplit[2] + ";" + blocksplit[3] + ";" + blocksplit[4] + ";" + blocksplit[5] + ";" + "y" + ";" + blocksplit[7]
 
 def generateRandomChallenge():
-    global targetClockTick,moneyTarget,goalType,visitorTarget
+    global targetClockTick,moneyTarget,goalType,visitorTarget,Screenmode
     #get money by clocktick
     chanceObjective = randint(0,1)
     if(chanceObjective==0):
-        goalType="moneyTicks"
-        targetClockTicks = [1000,10000,100000]
-        moneyTargets = [50000,100000,10000000]
-        
+        goalType="moneyTicks"        
+        if('E;S' in Screenmode):
+            targetClockTicks = [500,1000]
+            moneyTargets = [5000,10000]
+        elif('E;M' in Screenmode):
+            targetClockTicks = [1500,5000]
+            moneyTargets = [10000,30000]            
+        elif('E;L' in Screenmode):
+            targetClockTicks = [10000,50000]
+            moneyTargets = [35000,150000]
+        else:
+            targetClockTicks = [100,50000]
+            moneyTargets = [5000,150000]
         index = randint(0,len(targetClockTicks)-1)
+            
         
         targetClockTick = clockticks + targetClockTicks[index]
         moneyTarget = getCashInt() + moneyTargets[index]
     else:
         goalType="visitorTicks"
-        targetClockTicks = [1000,10000,100000]
+        targetClockTicks = [100,1000,10000]
         VisitorTargets = [100,1000,95000]
         index = randint(0,len(targetClockTicks)-1)
         
@@ -510,8 +612,11 @@ def generateRandomChallenge():
         print(visitorTarget)
 
         
-
-    
+def goToMainMenu():
+    global clockticks,Screenmode
+    clockticks=0
+    Screenmode="MM"
+    makeMainMenu()
     
     
 def checkGoal():
@@ -521,15 +626,19 @@ def checkGoal():
     if(clockticks>targetClockTick):
         labelTextWon = myfont.render("Failed!!!", 1, (255,0,0))            
         screen.blit(labelTextWon, (640, 400))
+        goToMainMenu()
     else:
         if(goalType=="moneyTicks"):
             if(getCashInt() >= moneyTarget and clockticks <= targetClockTick):
                 labelTextWon = myfont.render("Congratulations!", 1, (0,255,0))            
                 screen.blit(labelTextWon, (640, 400))
+                goToMainMenu()
         if(goalType=="visitorTicks"):
             if(getVisitorAmount() >= visitorTarget and clockticks <= targetClockTick):
                 labelTextWon = myfont.render("Congratulations!", 1, (0,255,0))            
                 screen.blit(labelTextWon, (640, 400))
+                goToMainMenu()
+
             
     
 #The main loop
@@ -556,7 +665,6 @@ def main():
         time.sleep(0.1)
         if("MG" in Screenmode):
             clockticks += 1 
-            checkGoal()
             generateCash()
             # initialize font; must be called after 'pygame.init()' to avoid 'Font not Initialized' error
             myfont = pygame.font.SysFont("ariel", 17)
@@ -605,9 +713,8 @@ def main():
             
             if(clockticks%500==0):
                 removeHappyness(5)
+            checkGoal()
 
-
-        
         
         
 
@@ -618,27 +725,29 @@ def main():
                 pygame.quit()
                 sys.exit()
             if e.type == MOUSEBUTTONDOWN:
-                 
-                 if e.button == 1:
-                     print("left button clicked")
-                     if(Screenmode=="MM"):
+                if e.button == 1:
+                    print("left button clicked")
+                    if(Screenmode=="MM"):
                         mainMenuClick(e) 
-                     else:
+                    else:
                         gameLeftClick(e)
-                 elif e.button == 2:
-                     print("middle button clicked")
-                 elif e.button == 3:
-                     print("right button clicked")
-                     removeAttraction(e)
-                 elif e.button == 4:
-                     print("scrolling forward")
-                     addCash(1000)
-                 elif e.button == 5:
-                     print("scrolling backward")
-                     lowerCash(1000)
-                 else:
+                elif e.button == 2:
+                    print("middle button clicked")
+                elif e.button == 3:
+                    print("right button clicked")
+                    removeAttraction(e)
+                elif e.button == 4:
+                    print("scrolling forward")
+                    addCash(1000)
+                elif e.button == 5:
+                    print("scrolling backward")
+                    lowerCash(1000)                    
+                else:
                      print("some cool button")
-                 print(e.pos)
+                print(e.pos)
+            #elif e.type == pygame.MOUSEMOTION:
+            #    checkForDrawSquare(e)
+
         if done:
             break
 

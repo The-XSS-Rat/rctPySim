@@ -1,6 +1,5 @@
 import pygame,sys,os
 
-
 def find_data_file(filename):
     if getattr(sys, 'frozen', False):
         # The application is frozen
